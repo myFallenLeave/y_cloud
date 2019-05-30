@@ -30,12 +30,14 @@ public class OAuth2ServerConfig {
     private static final String DEMO_RESOURCE_ID = "order";
 
 
+    //ResourceServerConfigurerAdapter 默认情况下是spring security oauth2的http配置
     @Configuration
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter{
         @Override
         public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 //            super.configure(resources);
+            //设置资源ID  配置客户端必须也带此ID
             resources.resourceId(DEMO_RESOURCE_ID).stateless(true);
         }
 
@@ -46,9 +48,13 @@ public class OAuth2ServerConfig {
                     .and()
                     .anonymous()
                     .and()
+                    //验证所有请求
                     .authorizeRequests()
+                    //access通过security表示式设置权限控制
+                    // 访问受保护资源 /product/** 的要求：客户端 Scope 为 select，拥有delete权限
                     .antMatchers("/product/**").access("#oauth2.hasScope('select') and hasPermission('delete')")
-                    .antMatchers("/order/**").authenticated();//配置order访问控制，必须认证后才能访问
+                    //配置order访问控制，必须认证后才能访问
+                    .antMatchers("/order/**").authenticated();
         }
     }
 
@@ -93,7 +99,7 @@ public class OAuth2ServerConfig {
                     .authenticationManager(authenticationManagerBean)
                     //配置userService 这样每次认证的时候会去检验用户是否锁定，有效等
                     .userDetailsService(userService)
-                    // 2018-4-3 增加配置，允许 GET、POST 请求获取 token，即访问端点：oauth/token
+                    //增加配置，允许 GET、POST 请求获取 token，即访问端点：oauth/token
                     .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 
             endpoints.reuseRefreshTokens(true);

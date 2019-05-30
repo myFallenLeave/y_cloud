@@ -1,24 +1,29 @@
 package com.yhw.cloud.auth.config;
 
 import lombok.SneakyThrows;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+//WebSecurityConfigurerAdapter默认情况下是springsecurity的http配置
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        //禁用 CSRF 跨站伪造请求，便于测试
         http.csrf().disable();
         http.requestMatchers()
                 .antMatchers("/oauth/**","/login/**","/logout/**")
                 .and()
+                // 验证所有请求
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()
                 .and()
