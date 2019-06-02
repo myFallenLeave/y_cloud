@@ -17,5 +17,7 @@
     <modules>
         <!-- springboot + oauth demo  -->
         <module>auth-example</module>
+        <!--测试-->
+        <module>test</module>
     </modules>
 </project>

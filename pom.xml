@@ -34,7 +34,10 @@
 
 
     <modules>
+        <!--认证-->
         <module>auth</module>
+        <!--网关-->
+        <module>gateway</module>
     </modules>
 
 

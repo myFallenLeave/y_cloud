@@ -1,0 +1,45 @@
+server:
+  port: 9999
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka/
+spring:
+  application:
+        name: @artifactId@
+  cloud:
+    gateway:
+      discovery:
+        locator:
+         #启用基于服务发现的路由定位
+          enabled: true
+          #启用服务实例ID名称小写支持
+          lower-case-service-id: true
+      routes:
+      - id: test
+      #通过地址 服务实例名转发
+#        uri: http://localhost:8080
+      #通过注册中心 服务实例名转发
+        uri: lb://test
+        #表示这个路由的请求匹配规则，只有符合这个规则的请求才会走这个路由。每个规则为并且的关系
+        predicates:
+        #当请求 网关地址/test/** 时将被转发
+        - Path=/test/**
+        filters:
+        - StripPrefix=1
+        #使用自定义过滤器
+        - AuthCheck
+      - id: cloud-auth
+#        uri: http://localhost:8888
+        uri: lb://auth-example
+        predicates:
+        - Path=/abc/**
+        filters:
+        #必须要加上StripPrefix 否则访问的地址会变成lb://auth-example/abc/**
+        #不是我们期望的 lb://auth-example/**
+        - StripPrefix=1
+
+
