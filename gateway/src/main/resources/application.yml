@@ -1,6 +1,6 @@
 server:
   port: 9999
-# ×¢²áÖĞĞÄÅäÖÃ
+# æ³¨å†Œä¸­å¿ƒé…ç½®
 eureka:
   instance:
     prefer-ip-address: true
@@ -9,37 +9,38 @@ eureka:
       defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka/
 spring:
   application:
-        name: @artifactId@
+    name: @artifactId@
   cloud:
     gateway:
       discovery:
         locator:
-         #ÆôÓÃ»ùÓÚ·şÎñ·¢ÏÖµÄÂ·ÓÉ¶¨Î»
+          #å¯ç”¨åŸºäºæœåŠ¡å‘ç°çš„è·¯ç”±å®šä½,è®¾ä¸ºtrueä¾¿å¼€å¯é€šè¿‡æœåŠ¡ä¸­å¿ƒçš„è‡ªåŠ¨æ ¹æ® serviceId åˆ›å»ºè·¯ç”±çš„åŠŸèƒ½
           enabled: true
-          #ÆôÓÃ·şÎñÊµÀıIDÃû³ÆĞ¡Ğ´Ö§³Ö
+          #å¯ç”¨æœåŠ¡å®ä¾‹IDåç§°å°å†™æ”¯æŒ
           lower-case-service-id: true
       routes:
-      - id: test
-      #Í¨¹ıµØÖ· ·şÎñÊµÀıÃû×ª·¢
-#        uri: http://localhost:8080
-      #Í¨¹ı×¢²áÖĞĞÄ ·şÎñÊµÀıÃû×ª·¢
-        uri: lb://test
-        #±íÊ¾Õâ¸öÂ·ÓÉµÄÇëÇóÆ¥Åä¹æÔò£¬Ö»ÓĞ·ûºÏÕâ¸ö¹æÔòµÄÇëÇó²Å»á×ßÕâ¸öÂ·ÓÉ¡£Ã¿¸ö¹æÔòÎª²¢ÇÒµÄ¹ØÏµ
-        predicates:
-        #µ±ÇëÇó Íø¹ØµØÖ·/test/** Ê±½«±»×ª·¢
-        - Path=/test/**
-        filters:
-        - StripPrefix=1
-        #Ê¹ÓÃ×Ô¶¨Òå¹ıÂËÆ÷
-        - AuthCheck
-      - id: cloud-auth
-#        uri: http://localhost:8888
-        uri: lb://auth-example
-        predicates:
-        - Path=/abc/**
-        filters:
-        #±ØĞëÒª¼ÓÉÏStripPrefix ·ñÔò·ÃÎÊµÄµØÖ·»á±ä³Élb://auth-example/abc/**
-        #²»ÊÇÎÒÃÇÆÚÍûµÄ lb://auth-example/**
-        - StripPrefix=1
-
-
+#        - id: test
+          #é€šè¿‡åœ°å€ æœåŠ¡å®ä¾‹åè½¬å‘
+          #        uri: http://localhost:8080
+          #é€šè¿‡æ³¨å†Œä¸­å¿ƒ æœåŠ¡å®ä¾‹åè½¬å‘
+#          uri: lb://test
+          #è¡¨ç¤ºè¿™ä¸ªè·¯ç”±çš„è¯·æ±‚åŒ¹é…è§„åˆ™ï¼Œåªæœ‰ç¬¦åˆè¿™ä¸ªè§„åˆ™çš„è¯·æ±‚æ‰ä¼šèµ°è¿™ä¸ªè·¯ç”±ã€‚æ¯ä¸ªè§„åˆ™ä¸ºå¹¶ä¸”çš„å…³ç³»
+#          predicates:
+            #å½“è¯·æ±‚ ç½‘å…³åœ°å€/test/** æ—¶å°†è¢«è½¬å‘
+#            - Path=/test/**
+#          filters:
+            #ä½¿ç”¨è‡ªå®šä¹‰è¿‡æ»¤å™¨
+#            - StripPrefix=1
+#            - name: AuthCheck
+#              args:
+#                status: true
+        - id: cloud-auth
+          #        uri: http://localhost:8888
+          uri: lb://auth-example
+          predicates:
+            - Path=/abc/**
+          #å·²é…ç½®å…¨å±€è¿‡æ»¤å™¨
+#          filters:
+            #å¿…é¡»è¦åŠ ä¸ŠStripPrefix å¦åˆ™è®¿é—®çš„åœ°å€ä¼šå˜æˆlb://auth-example/abc/**
+            #ä¸æ˜¯æˆ‘ä»¬æœŸæœ›çš„ lb://auth-example/**
+#            - StripPrefix=1
