@@ -36,6 +36,8 @@
 
 
     <modules>
+        <!-- eureka -->
+        <module>eureka-server</module>
         <!--认证-->
         <module>auth</module>
         <!--网关-->

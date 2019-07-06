@@ -17,6 +17,11 @@ public class TestController {
         return "get test";
     }
 
+    @GetMapping("/getTest/abc")
+    public String test1(){
+        return "get test,abc";
+    }
+
     @PostMapping("/postTest")
     public String postTest(){
         return "post test";
