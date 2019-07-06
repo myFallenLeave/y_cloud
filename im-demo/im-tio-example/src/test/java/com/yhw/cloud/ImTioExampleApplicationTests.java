@@ -1,4 +1,4 @@
-//package com.yhw;
+//package com.yhw.cloud;
 //
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@
 //
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-//public class TestApplicationTests {
+//public class ImTioExampleApplicationTests {
 //
 //	@Test
 //	public void contextLoads() {
