@@ -41,6 +41,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- 热部署方式一、spring热部署,需要启用fork,下面设置一定要设置后重启，不然无法生效 -->
+		<!-- idea设置 1.setting build-> Compiler ->启用 Build project automatically -->
+		<!-- idea设置 2. shift+ctrl+alt+/  选择Registry,勾上 compiler.automake.allow.when.app.running -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -48,6 +58,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!--fork:如果没有该项配置,整个devtools不会起作用-->
+				<configuration>
+					<fork>true</fork>
+				</configuration>
+				<!-- 方式二、spring热部署,如果没有，则移到上面，让下载 -->
+				<!--<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.5.RELEASE</version>
+					</dependency>
+				</dependencies>-->
 			</plugin>
 		</plugins>
 	</build>

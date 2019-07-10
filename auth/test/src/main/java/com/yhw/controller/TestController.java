@@ -14,11 +14,16 @@ public class TestController {
 
     @GetMapping("/getTest")
     public String test(){
+        System.out.println("哈哈");
+        if(true){
+            System.out.println("aaaaaaaaaaaaaaaa111111111a");
+        }
         return "get test";
     }
 
     @GetMapping("/getTest/abc")
     public String test1(){
+        System.out.println("get test,abc");
         return "get test,abc";
     }
 

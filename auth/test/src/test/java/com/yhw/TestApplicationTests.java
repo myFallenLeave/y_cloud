@@ -22,13 +22,22 @@ public class TestApplicationTests {
 	}
 
 	public static void main(String[] args){
-		String groupId = null;
-		Optional<String> optional = Optional.ofNullable(groupId);
-//		Optional<String> optional = Optional.of(groupId);
-		System.out.println(optional.isPresent());
-		System.out.println(optional.orElse("哈哈"));
+		/*AtomicInteger atomicInteger = new AtomicInteger();
+		System.out.println(atomicInteger.get());
+		System.out.println(0x61c88647);
+		atomicInteger.getAndAdd(0x61c88647);
+		System.out.println(atomicInteger.get());
+		atomicInteger.getAndAdd(0x61c88647);
+		System.out.println(atomicInteger.get());*/
+		ThreadLocal<String> test = new ThreadLocal<>();
+		test.set("aaa");
+		test.set("bbb");
 
-//		AtomicInteger
+		System.out.println(test.get());
+		test.remove();
+		System.out.println(test.get());
+		test.remove();
+		System.out.println(test.get());
 	}
 
 }
