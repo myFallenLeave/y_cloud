@@ -1,0 +1,8 @@
+server:
+  port: 8080
+#im配置
+im:
+  ws:
+    port: 8889
+    #加载cmd扫描包路径
+    scan: com.yhw.cloud.ws.wsprocess
