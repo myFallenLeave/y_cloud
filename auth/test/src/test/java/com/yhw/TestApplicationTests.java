@@ -5,8 +5,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,22 +25,22 @@ public class TestApplicationTests {
 	}
 
 	public static void main(String[] args){
-		/*AtomicInteger atomicInteger = new AtomicInteger();
-		System.out.println(atomicInteger.get());
-		System.out.println(0x61c88647);
-		atomicInteger.getAndAdd(0x61c88647);
-		System.out.println(atomicInteger.get());
-		atomicInteger.getAndAdd(0x61c88647);
-		System.out.println(atomicInteger.get());*/
-		ThreadLocal<String> test = new ThreadLocal<>();
-		test.set("aaa");
-		test.set("bbb");
+		Integer a = 1;
+		Integer b = 2;
+		Integer c = 3;
+		Integer d = 3;
+		Integer e = 158;
+		Integer f = 158;
+		Long g = 3L;
+		System.out.println(c == d);
+		System.out.println(e == f);//-128-127
+		System.out.println(c == (a+b));
+		System.out.println(c.equals(a+b));
+		System.out.println(g == (a+b));
+		System.out.println(g.equals(a+b));
 
-		System.out.println(test.get());
-		test.remove();
-		System.out.println(test.get());
-		test.remove();
-		System.out.println(test.get());
+		Map<String,String> abc = new HashMap<>();
+//		CopyOnWriteArrayList
 	}
 
 }

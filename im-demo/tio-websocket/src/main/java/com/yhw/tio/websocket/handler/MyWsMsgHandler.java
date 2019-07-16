@@ -125,7 +125,7 @@ public class MyWsMsgHandler implements IWsMsgHandler {
         Command command = null;
         try{
             jsonObject = JSONObject.parseObject(text);
-            Integer commandCode = jsonObject.getInteger("code");
+            Integer commandCode = jsonObject.getInteger("command");
             if(commandCode == null){
                 //返回null,记录日志
             }

@@ -9,7 +9,7 @@ public class Message implements Serializable {
     /**
      * 编码指令，通过编码指令找到具体的Handler
      */
-    private int code;
+    private int command;
 
     /**
      * 具体的返回结果
@@ -18,18 +18,12 @@ public class Message implements Serializable {
 
     public Message(){}
 
-    public Message(int code,Object result){
-        this.code = code;
+    public Message(int command,Object result){
+        this.command = command;
         this.result = result;
     }
 
-    public int getCode() {
-        return code;
-    }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public Object getResult() {
         return result;
@@ -39,25 +33,33 @@ public class Message implements Serializable {
         this.result = result;
     }
 
+    public int getCommand() {
+        return command;
+    }
+
+    public void setCommand(int command) {
+        this.command = command;
+    }
+
 
     public static class Builder{
-        private int code;
+        private int command;
 
         private Object result;
 
         private Builder(){}
 
-        public Builder setCode(int code){
-            this.code = code;
+        public Builder setCommand(int command){
+            this.command = command;
             return this;
         }
-        public Builder setCode(Object result){
+        public Builder setResult(Object result){
             this.result = result;
             return this;
         }
 
         public Message builder(){
-            return new Message(this.code,this.result);
+            return new Message(this.command,this.result);
         }
 
         public static Builder newBuiler(){
