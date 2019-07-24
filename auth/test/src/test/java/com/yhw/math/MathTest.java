@@ -1,5 +1,9 @@
 package com.yhw.math;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * 均摊法
  * Created by YHW on 2019/7/6.
@@ -14,17 +18,35 @@ public class MathTest {
 
 
     public static void main(String[] args){
-        int appCount = 6;
         MathTest mathTest = new MathTest();
-        AvgNumber avgNumber = mathTest.getAvgNumber(88,appCount);
+        mathTest.getAvgList(6,88);
+    }
+
+    /**
+     *
+     * @param appCount  机器数
+     * @param queueLength 队列长度
+     * @return
+     */
+    public List<String> getAvgList(int appCount, int queueLength){
+        List<String> resultList = Lists.newArrayList();
+        if(queueLength <= 8){
+            for (int i = 0; i < appCount; i++){
+                resultList.add("0," + (queueLength-1));
+            }
+        }
+        AvgNumber avgNumber = getAvgNumber(queueLength,appCount);
         System.out.println("平均值：" + avgNumber.getAvgNum() + "  余数:" + avgNumber.getRemainder());
+        //是否最后一台机器
         boolean isLast = false;
         for (int i = 0; i < appCount; i++){
             if(i == (appCount-1)){
                 isLast = true;
             }
-            System.out.println("["+mathTest.getBeginIndex(i,avgNumber) + ":" + mathTest.getEndIndex(i,avgNumber,isLast) + "]");
+            System.out.println("["+ getBeginIndex(i,avgNumber) + ":" + getEndIndex(i,avgNumber,isLast) + "]");
+            resultList.add(getBeginIndex(i,avgNumber) + ","  + getEndIndex(i,avgNumber,isLast));
         }
+        return resultList;
     }
 
     /**
@@ -39,7 +61,7 @@ public class MathTest {
 
     /**
      * 通过机器下标获取 当前机器所需要监听的队列起始下标
-     * @param appIndex
+     * @param appIndex 机器下标
      * @param avgNumber
      * @return
      */
@@ -96,16 +118,9 @@ public class MathTest {
             return avgNum;
         }
 
-        public void setAvgNum(int avgNum) {
-            this.avgNum = avgNum;
-        }
-
         public int getRemainder() {
             return remainder;
         }
 
-        public void setRemainder(int remainder) {
-            this.remainder = remainder;
-        }
     }
 }
