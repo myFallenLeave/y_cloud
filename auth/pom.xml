@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>auth-server</module>
         <!-- springboot + oauth demo  -->
         <module>auth-example</module>
         <!--测试-->

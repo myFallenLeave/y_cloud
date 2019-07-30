@@ -17,6 +17,7 @@
 		<module>im-tio-example</module>
 		<module>tio-websocket</module>
 		<!-- 基于netty实现 -->
+		<module>netty-websocket</module>
 	</modules>
 
 

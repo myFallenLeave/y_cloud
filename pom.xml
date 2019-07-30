@@ -23,6 +23,8 @@
         <!-- alibaba druid 连接池 -->
         <druid.spring.boot.starter>1.1.9</druid.spring.boot.starter>
         <mybatis-plus.version>3.1.0</mybatis-plus.version>
+        <!-- netty -->
+        <netty.version>4.1.36.Final</netty.version>
         <!-- t-io aio通讯 -->
         <org.t-io.version>3.3.0.v20190512-RELEASE</org.t-io.version>
         <hutool.version>4.5.10</hutool.version>
@@ -145,6 +147,13 @@
                 <groupId>org.t-io</groupId>
                 <artifactId>tio-websocket-server</artifactId>
                 <version>${org.t-io.version}</version>
+            </dependency>
+
+            <!-- netty-->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-parent</artifactId>
+                <version>${netty.version}</version>
             </dependency>
 
             <!--工具包开始 -->
