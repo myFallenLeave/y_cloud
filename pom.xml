@@ -40,6 +40,8 @@
     <modules>
         <!-- eureka -->
         <module>eureka-server</module>
+        <!--配置中心-->
+        <module>config</module>
         <!--认证-->
         <module>auth</module>
         <!--网关-->

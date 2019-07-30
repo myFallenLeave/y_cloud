@@ -23,7 +23,7 @@ public class MyUserDetailsServiceimplmpl implements UserDetailsService {
         /*for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
         }*/
-        return new MyUser("", "", "user.getUsername()", "{bcrypt}" + "user.getPassword()",
+        return new MyUser("123456", "23456", "zhangsan", "{bcrypt}" + "123456",
               true, true, true, true, authorities);
     }
 

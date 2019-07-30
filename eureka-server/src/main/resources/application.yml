@@ -3,17 +3,25 @@ server:
 spring:
   application:
       name: @artifactId@
+#权限模块
+  security:
+    #如果不添加，将会产生随机值密码，用户名是user
+    user:
+      password: sunday
+      name: sunday
 
 eureka:
   instance:
     hostname: localhost
     prefer-ip-address: true
   client:
+    #是否把应用注册到Eureka
     register-with-eureka: false
+    #是否从Eureka获取注册信息，单节点不需要同步其他Eureka Server节点的数据
     fetch-registry: false
     service-url:
 #      defaultZone: http://cloud:cloud@${eureka.instance.hostname}:${server.port}/eureka/
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
   server:
     eviction-interval-timer-in-ms: 4000
     enable-self-preservation: false

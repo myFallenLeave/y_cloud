@@ -1,0 +1,34 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: native
+  # ÅäÖÃÖĞĞÄ
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config/
+        bootstrap: true
+#        git:
+#          uri: http://localhost:8811/y_cloud/cloud-config.git     # ÅäÖÃgit²Ö¿âµÄµØÖ·
+#          username: yhw                                   # git²Ö¿âµÄÕËºÅ
+#          password: yhw
+#        native:
+#          search-locations: classpath:/config/
+# ×¢²áÖĞĞÄÅäÖÃ
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://sunday:sunday@${EUREKA_HOST:localhost}:8761/eureka/
+# ±©Â¶¼à¿Ø¶Ëµã
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

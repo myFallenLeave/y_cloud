@@ -1,3 +1,44 @@
 server:
   port: 8888
+logging:
+  level:
+    root: info
+spring:
+  application:
+      name: @artifactId@
+  #redis相关配置，可以采用默认配置
+  redis:
+    host: localhost
+    database: 1
+    port: 6379
+  #json时区设置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  security:
+    user:
+      password: sunday
+      name: sunday
+  cloud:
+    inetutils:
+      #2.只使用站点本地地址
+#      use-only-site-local-interfaces: true
+      #3.多网卡的情况下，可以忽略指定名称的网卡，veth.*(忽略veth开头的网卡)
+#      ignored-interfaces:
+#        - docker0
+#        - veth.*
+      #4.使用正则表达式，指定使用的网络地址
+#      preferred-networks:
+#        - 192.168
+#        - 10.0
+# 注册中心配置
+eureka:
+  instance:
+    #true表示将自己的Ip注册到EurekaServer,若不配置则表示：将注册微服务所在的操作系统的hostname
+    perfer-ip-address: true
+    #1.手动指定ip地址（极端情况下）
+    #ip-address: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${EUREKA_HOST:localhost}:8761/eureka/
 

@@ -2,6 +2,7 @@ package com.yhw.auth.server.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +28,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-//    private final RedisConnectionFactory connectionFactory;
+    private final RedisConnectionFactory connectionFactory;
     private final DataSource dataSource;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
@@ -67,7 +68,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public TokenStore tokenStore(){
-        TokenStore tokenStore = new RedisTokenStore(null);
+        TokenStore tokenStore = new RedisTokenStore(connectionFactory);
         return tokenStore;
     }
 
