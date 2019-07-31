@@ -16,14 +16,14 @@ public class Test {
 
     @org.junit.Test
     public void user(){
-        url = url.concat("/bbbb");
+        url = url.concat("/aaa");
 
 //        String result = HttpUtil.post(url); bearer  Basic
         String result = HttpRequest.get(url)
 //                .header("Authorization","bearer c119cd7d-378e-40e4-a45f-228171120b34")
                 .execute()
                 .body();
-        System.out.println(result);
+        System.out.println("------------"+result);
     }
 
     @org.junit.Test

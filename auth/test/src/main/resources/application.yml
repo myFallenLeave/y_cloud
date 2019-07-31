@@ -27,7 +27,7 @@ spring:
 security:
   oauth2:
     client:
-      client-id: client
+      client-id: @artifactId@
 #      client-secret: ENC(i3cDFhs26sa2Ucrfz2hnQw==)
       client-secret: secret
       scope: app
