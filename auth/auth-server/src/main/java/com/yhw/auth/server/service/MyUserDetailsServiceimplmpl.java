@@ -4,10 +4,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MyUserDetailsServiceimplmpl implements UserDetailsService {
 
     @Override
@@ -17,13 +20,18 @@ public class MyUserDetailsServiceimplmpl implements UserDetailsService {
     }
 
 
+    //使用模拟数据
     private UserDetails getUser(){
         List<GrantedAuthority> authorities = new ArrayList<>(5);
 
         /*for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
         }*/
-        return new MyUser("123456", "23456", "zhangsan", "{bcrypt}" + "123456",
+
+
+        //密码一定要加密
+        String password = new BCryptPasswordEncoder().encode("123456");
+        return new MyUser("123456", "23456", "zhangsan", "{bcrypt}" + password,
               true, true, true, true, authorities);
     }
 

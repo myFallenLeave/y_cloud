@@ -5,10 +5,15 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka/
+      defaultZone: http://sunday:sunday@${EUREKA_HOST:localhost}:8761/eureka/
 spring:
   application:
         name: @artifactId@
+  security:
+    #如果不添加，将会产生随机值密码，用户名是user
+    user:
+      password: sunday
+      name: sunday
   #热部署配置
   devtools:
     restart:
@@ -18,4 +23,20 @@ spring:
       additional-paths: src/main/java
       #不生效位置，使用默认
       exclude: WEB-INF/**
+# spring security 配置
+security:
+  oauth2:
+    client:
+      client-id: client
+#      client-secret: ENC(i3cDFhs26sa2Ucrfz2hnQw==)
+      client-secret: secret
+      scope: app
+    #通用的。。。。。。。
+    resource:
+      id: @artifactId@
+      loadBalanced: true
+      ##指定用户信息地址
+      token-info-uri: http://localhost:8888/check_token
+      prefer-token-info: false
+
 

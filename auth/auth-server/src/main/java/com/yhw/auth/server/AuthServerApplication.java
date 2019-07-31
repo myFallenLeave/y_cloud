@@ -3,6 +3,9 @@ package com.yhw.auth.server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+//@SpringCloudApplication
+//@EnableDiscoveryClient
+
 @SpringBootApplication
 public class AuthServerApplication {
 

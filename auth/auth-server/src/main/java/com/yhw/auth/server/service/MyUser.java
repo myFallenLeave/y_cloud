@@ -5,6 +5,9 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+/**
+ * 拓展用户信息
+ */
 public class MyUser extends User {
 
     private String id;

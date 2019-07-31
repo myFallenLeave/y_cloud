@@ -38,6 +38,8 @@
 
 
     <modules>
+        <!--公共包-->
+        <module>common</module>
         <!-- eureka -->
         <module>eureka-server</module>
         <!--配置中心-->
