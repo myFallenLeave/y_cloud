@@ -15,13 +15,25 @@ public class Test {
     public static String url = "http://localhost:8888";
 
     @org.junit.Test
+    public void user(){
+        url = url.concat("/bbbb");
+
+//        String result = HttpUtil.post(url); bearer  Basic
+        String result = HttpRequest.get(url)
+//                .header("Authorization","bearer c119cd7d-378e-40e4-a45f-228171120b34")
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    @org.junit.Test
     public void aaa(){
-        String url1 = "http://localhost:8080//getTest/abc";
+        String url1 = "http://localhost:8080/getTest/abc";
         System.out.println(url);
 
-//        String result = HttpUtil.post(url);
+//        String result = HttpUtil.post(url); bearer  Basic
         String result = HttpRequest.get(url1)
-                .header("Authorization","Basic 09e9892a-a0e7-4c27-9c2f-7e5af0d96c29")
+                .header("Authorization","bearer c119cd7d-378e-40e4-a45f-228171120b34")
                 .execute()
                 .body();
         System.out.println(result);

@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/test")
+import java.security.Principal;
+
+//@RequestMapping("/test")
 @RestController
 public class TestController {
 
@@ -16,5 +18,11 @@ public class TestController {
     @RequestMapping("/bbbb")
     public String test1(){
         return "test1";
+    }
+
+    @GetMapping("/user")
+    public Principal user(Principal user){
+        System.out.println("111111111afsafasfaaaaaa");
+        return user;
     }
 }

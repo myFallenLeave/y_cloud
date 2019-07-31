@@ -9,11 +9,11 @@ eureka:
 spring:
   application:
         name: @artifactId@
-  security:
-    #如果不添加，将会产生随机值密码，用户名是user
-    user:
-      password: sunday
-      name: sunday
+#  security:
+#    #如果不添加，将会产生随机值密码，用户名是user
+#    user:
+#      password: sunday
+#      name: sunday
   #热部署配置
   devtools:
     restart:
@@ -36,7 +36,7 @@ security:
       id: @artifactId@
       loadBalanced: true
       ##指定用户信息地址
-      token-info-uri: http://localhost:8888/check_token
+      token-info-uri: http://localhost:8888/user
       prefer-token-info: false
 
 

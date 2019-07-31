@@ -10,7 +10,7 @@ spring:
   redis:
     host: localhost
     database: 1
-    port: 6391
+    port: 6379
   #json时区设置
   jackson:
     time-zone: GMT+8
@@ -20,12 +20,12 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USER:root}
-    password: ${MYSQL_PWD:yyAgr!!#%1}
+    password: ${MYSQL_PWD:yhwei}
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/oauth?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
-  security:
-    user:
-      password: sunday
-      name: sunday
+#  security:
+#    user:
+#      password: sunday
+#      name: sunday
   cloud:
 #    inetutils:
       #2.只使用站点本地地址
