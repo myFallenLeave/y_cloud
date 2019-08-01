@@ -14,26 +14,32 @@ public class Test {
 
     public static String url = "http://localhost:8888";
 
+    /**
+     * 测试访问其他服务器
+     * 不传递token 将会出现401错误
+     * 通过token服务器拿到 token 就可以调用成功了
+     */
     @org.junit.Test
-    public void user(){
-        url = url.concat("/aaa");
+    public void getTest(){
+        String url1 = "localhost:8080/getTest";
 
-//        String result = HttpUtil.post(url); bearer  Basic
-        String result = HttpRequest.get(url)
-//                .header("Authorization","bearer c119cd7d-378e-40e4-a45f-228171120b34")
+        String result = HttpRequest.get(url1)
+                .header("Authorization","bearer fb57c8ee-6629-4266-a41b-15a92c614bfc")
                 .execute()
                 .body();
         System.out.println("------------"+result);
     }
 
+    /**
+     * 可以通过 不传递Authorization 测试
+     */
     @org.junit.Test
     public void aaa(){
-        String url1 = "http://localhost:8080/getTest/abc";
-        System.out.println(url);
+        url = url.concat("/aaa");
 
 //        String result = HttpUtil.post(url); bearer  Basic
-        String result = HttpRequest.get(url1)
-                .header("Authorization","bearer c119cd7d-378e-40e4-a45f-228171120b34")
+        String result = HttpRequest.get(url)
+                .header("Authorization","bearer fb57c8ee-6629-4266-a41b-15a92c614bfc")
                 .execute()
                 .body();
         System.out.println(result);
@@ -76,6 +82,20 @@ public class Test {
         String result = HttpRequest.post(url)
                 .form(tokenParameters)
                 .header("Authorization","Basic ".concat(Base64.getEncoder().encodeToString("test:123456".getBytes())))
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    //认证token 会返回token所属的用户信息
+    @org.junit.Test
+    public void checkToken(){
+        url = url.concat("/oauth/check_token");
+
+        parameter.put("token","fb57c8ee-6629-4266-a41b-15a92c614bfc");
+
+        String result = HttpRequest.post(url)
+                .form(parameter)
                 .execute()
                 .body();
         System.out.println(result);

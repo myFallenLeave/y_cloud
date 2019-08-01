@@ -10,36 +10,21 @@
     <groupId>com.yhw</groupId>
     <artifactId>auth-server</artifactId>
     <version>1.0.0</version>
-    <description>Demo project for Spring Boot</description>
+    <description>oauth2 【认证服务器】</description>
 
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>com.yhw</groupId>
+            <artifactId>common-bom</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
-        <!-- web beign -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.yhw</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
-        <!--web end-->
-
-        <!-- security beign -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-        <!-- security end -->
 
         <!-- jdbc -->
         <dependency>
@@ -57,16 +42,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
         </dependency>
 
         <dependency>

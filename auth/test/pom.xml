@@ -11,7 +11,7 @@
 	<artifactId>test</artifactId>
 	<version>1.0.0</version>
 	<!--<name>test</name>-->
-	<description>Demo project for Spring Boot</description>
+	<description>测试【认证】 + 【】 服务</description>
 
 
 	<dependencies>
@@ -19,12 +19,6 @@
 			<groupId>com.yhw</groupId>
 			<artifactId>common-security</artifactId>
 			<version>1.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-security</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
 
 		<dependency>
