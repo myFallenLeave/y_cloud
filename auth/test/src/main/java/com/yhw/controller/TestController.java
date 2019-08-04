@@ -1,5 +1,6 @@
 package com.yhw.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import javax.annotation.PostConstruct;
 /**
  * Created by YHW on 2019/6/2.
  */
+@Api(value = "测试")
 @RestController
 public class TestController {
 
