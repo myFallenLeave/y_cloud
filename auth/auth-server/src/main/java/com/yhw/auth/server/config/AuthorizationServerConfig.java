@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
@@ -24,7 +23,6 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 认证服务器配置
@@ -38,7 +36,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final DataSource dataSource;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
-    //资源服务器配置  ResourceServerConfigurerAdapter(目前不需要实现)
+
+    @Bean
+    public TokenStore tokenStore(){
+        TokenStore tokenStore = new RedisTokenStore(connectionFactory);
+        return tokenStore;
+    }
+
 
     //在令牌端点上定义了安全约束
     @Override
@@ -64,9 +68,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //持久化客户端信息
-        /*JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
-        clientDetailsService.setSelectClientDetailsSql(" where client_id = ? ");
-        clientDetailsService.setFindClientDetailsSql(" order by client_id ");*/
         clients.withClientDetails(clientDetails());
     }
 
@@ -94,22 +95,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
-    public TokenStore tokenStore(){
-        TokenStore tokenStore = new RedisTokenStore(connectionFactory);
-        return tokenStore;
-    }
-
-
-
-    @Bean
     public TokenEnhancer tokenEnhancer(){
         return ((accessToken, authentication) -> {
             final Map<String, Object> additionalInfo = new HashMap<>(1);
             additionalInfo.put("license", "made by yunyang");
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-           return accessToken;
+            return accessToken;
         });
     }
-
 
 }

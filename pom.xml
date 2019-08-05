@@ -13,7 +13,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
         <spring-platform.version>Cairo-SR7</spring-platform.version>
         <!--<security.oauth.version>2.3.4.RELEASE</security.oauth.version>-->
         <security.oauth.version>[2.3.5,)</security.oauth.version>
@@ -27,6 +27,7 @@
         <netty.version>4.1.36.Final</netty.version>
         <!-- t-io aio通讯 -->
         <org.t-io.version>3.3.0.v20190512-RELEASE</org.t-io.version>
+        <swagger.version>2.9.2</swagger.version>
         <hutool.version>4.5.10</hutool.version>
         <lombok.version>1.18.6</lombok.version>
         <fastjson.version>1.2.55</fastjson.version>
@@ -144,6 +145,13 @@
                         <artifactId>HikariCP</artifactId>
                     </exclusion>
                 </exclusions>-->
+            </dependency>
+
+            <!--swagger 依赖-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
 
             <!-- 网络包 -->

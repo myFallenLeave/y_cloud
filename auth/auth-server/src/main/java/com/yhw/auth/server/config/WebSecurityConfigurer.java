@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
- * @author
+ * Security 配置
  */
 @Configuration
 @EnableWebSecurity
@@ -23,14 +23,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**", "/token/**","/aaa")
                 .permitAll()//任何人都可以访问上述URL
                 .anyRequest()
-                .permitAll();
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .authenticated()//必须要经过Basic认证的才能访问
-//                .and()
-//                .csrf()//允许跨域
-//                .disable();
+//                .authenticated()//必须要经过认证的才能访问
+                .permitAll() //都可以访问(相当于禁止了 security 的 basic认证)
+                .and()
+                .csrf()//允许跨域
+                .disable();
 
     }
 

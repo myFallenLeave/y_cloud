@@ -31,7 +31,7 @@ public class MyUserDetailsServiceimplmpl implements UserDetailsService {
 
         //密码一定要加密
         String password = new BCryptPasswordEncoder().encode("123456");
-        return new MyUser("123456", "23456", "zhangsan", "{bcrypt}" + password,
+        return new MyUser("123456", "zhangsan", "{bcrypt}" + password,
               true, true, true, true, authorities);
     }
 

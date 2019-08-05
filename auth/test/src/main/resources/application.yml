@@ -9,11 +9,12 @@ eureka:
 spring:
   application:
         name: @artifactId@
-#  security:
-#    #如果不添加，将会产生随机值密码，用户名是user
-#    user:
-#      password: sunday
-#      name: sunday
+  security:
+    oauth2:
+       client:
+         client_id: client
+         client_secret: secret
+         check_token_uri: http://localhost:8888/oauth/check_token
   #热部署配置
   devtools:
     restart:
@@ -25,12 +26,6 @@ spring:
       exclude: WEB-INF/**
 # spring security 配置
 security:
-  oauth2:
-    client:
-      client-id: @artifactId@
-#      client-secret: ENC(i3cDFhs26sa2Ucrfz2hnQw==)
-      client-secret: secret
-      scope: app
     #通用的。。。。。。。
     resource:
       id: @artifactId@

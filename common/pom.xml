@@ -14,8 +14,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!-- 服务通用配置 -->
         <module>common-bom</module>
+        <!-- 服务器安全配置 -->
         <module>common-security</module>
+        <!-- 通用工具包 -->
+        <module>common-util</module>
     </modules>
 
 
