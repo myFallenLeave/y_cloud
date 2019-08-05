@@ -5,12 +5,12 @@ logging:
     root: info
 spring:
   application:
-      name: @artifactId@
+    name: @artifactId@
   #redis相关配置，可以采用默认配置
   redis:
-    host: localhost
+    host: 39.106.9.197
     database: 1
-    port: 6379
+    port: 8879
   #json时区设置
   jackson:
     time-zone: GMT+8
@@ -20,21 +20,21 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USER:root}
-    password: ${MYSQL_PWD:yhwei}
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/oauth?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    password: ${MYSQL_PWD:yyAgr!!#%1}
+    url: jdbc:mysql://${MYSQL_HOST:39.105.22.73}:${MYSQL_PORT:8806}/oauth?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
   security:
     user:
       password: sunday
       name: sunday
   cloud:
-#    inetutils:
-      #2.只使用站点本地地址
-#      use-only-site-local-interfaces: true
-      #3.多网卡的情况下，可以忽略指定名称的网卡，veth.*(忽略veth开头的网卡)
-#      ignored-interfaces:
-#        - docker0
-#        - veth.*
-      #4.使用正则表达式，指定使用的网络地址
+  #    inetutils:
+  #2.只使用站点本地地址
+  #      use-only-site-local-interfaces: true
+  #3.多网卡的情况下，可以忽略指定名称的网卡，veth.*(忽略veth开头的网卡)
+  #      ignored-interfaces:
+  #        - docker0
+  #        - veth.*
+  #4.使用正则表达式，指定使用的网络地址
 #      preferred-networks:
 #        - 192.168
 #        - 10.0
@@ -48,10 +48,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://sunday:sunday@${EUREKA_HOST:localhost}:8761/eureka/
-
-security:
-  oauth2:
-    resource:
-      filter-order: 3
+#security:
+#  oauth2:
+#    resource:
+#      filter-order: 3
 
 
