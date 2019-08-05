@@ -1,6 +1,7 @@
 package com.yhw.common.security.config;
 
 import com.yhw.common.constants.SecurityConstant;
+import com.yhw.common.security.YyUserAuthenticationConverter;
 import com.yhw.common.security.model.RemoteTokenProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +30,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new RemoteTokenProperties();
     }
 
+    /**
+     * 配置token 转换器
+     * @return
+     */
     @Bean
     public AccessTokenConverter accessTokenConverter() {
-        return new DefaultAccessTokenConverter();
+        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+        YyUserAuthenticationConverter userTokenConverter = new YyUserAuthenticationConverter();
+        accessTokenConverter.setUserTokenConverter(userTokenConverter);
+        return accessTokenConverter;
     }
 
     @Bean
@@ -70,12 +78,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .ExpressionInterceptUrlRegistry registry = http
                 .authorizeRequests();
 
+//        /swagger-resources/**  /webjars/**  /swagger-ui.html  /swagger-resources  /v2/api-docs
 
-        registry.antMatchers("/actuator/**","/v2/api-docs","/user/info/*","/log/save",
-                //放行 swagger
-                "/swagger-resources/configuration/ui",
-                "/swagger-resources","/swagger-resources/configuration/security",
-                "/swagger-ui.html","/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/index").permitAll();
+        registry.antMatchers(remoteTokenProperties().getIgnore_uri()).permitAll();
+
+//        registry.antMatchers("/actuator/**","/v2/api-docs","/user/info/*","/log/save",
+//                //放行 swagger
+//                "/swagger-resources/configuration/ui",
+//                "/swagger-resources","/swagger-resources/configuration/security",
+//                "/swagger-ui.html","/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/index")
+//                .permitAll();
         registry.anyRequest().authenticated()
                 .and().csrf().disable();
         super.configure(http);

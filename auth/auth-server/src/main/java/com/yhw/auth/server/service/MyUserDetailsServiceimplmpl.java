@@ -1,5 +1,6 @@
 package com.yhw.auth.server.service;
 
+import com.yhw.common.model.AuthUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +32,7 @@ public class MyUserDetailsServiceimplmpl implements UserDetailsService {
 
         //密码一定要加密
         String password = new BCryptPasswordEncoder().encode("123456");
-        return new MyUser("123456", "zhangsan", "{bcrypt}" + password,
+        return new AuthUser("123456", "zhangsan", "{bcrypt}" + password,
               true, true, true, true, authorities);
     }
 

@@ -1,5 +1,6 @@
 package com.yhw.config;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 /**
  * Created by YHW on 2019/8/4.
  */
+@ComponentScan("com.yhw")
 @Configuration
 public class WebApiConfig extends WebMvcConfigurationSupport {
 

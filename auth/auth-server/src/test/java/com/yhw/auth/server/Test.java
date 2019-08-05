@@ -39,7 +39,7 @@ public class Test {
 
 //        String result = HttpUtil.post(url); bearer  Basic
         String result = HttpRequest.get(url)
-                .header("Authorization","bearer fb57c8ee-6629-4266-a41b-15a92c614bfc")
+                .header("Authorization","bearer 24d1b36d-78ef-4015-9e5a-edfd27420327")
                 .execute()
                 .body();
         System.out.println(result);
@@ -92,7 +92,7 @@ public class Test {
     public void checkToken(){
         url = url.concat("/oauth/check_token");
 
-        parameter.put("token","fb57c8ee-6629-4266-a41b-15a92c614bfc");
+        parameter.put("token","24d1b36d-78ef-4015-9e5a-edfd27420327");
 
         String result = HttpRequest.post(url)
                 .form(parameter)

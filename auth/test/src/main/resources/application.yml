@@ -6,6 +6,25 @@ eureka:
   client:
     service-url:
       defaultZone: http://sunday:sunday@${EUREKA_HOST:localhost}:8761/eureka/
+# feign 配置
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+#--------
 spring:
   application:
         name: @artifactId@
@@ -15,6 +34,15 @@ spring:
          client_id: client
          client_secret: secret
          check_token_uri: http://localhost:8888/oauth/check_token
+         ignore_uri:
+#           - /swagger-resources/**
+#           - /webjars/**
+#           - /swagger-ui.html
+#           - /swagger-resources
+#           - /v2/api-docs
+#           - /actuator/**
+           #放行所有，即不开启资源认证
+           - /**
   #热部署配置
   devtools:
     restart:
