@@ -1,5 +1,6 @@
 package com.yhw.auth.server.config;
 
+import com.yhw.common.security.YyUserAuthenticationConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
@@ -71,10 +74,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.withClientDetails(clientDetails());
     }
 
+    @Bean
+    public AccessTokenConverter accessTokenConverter() {
+        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+        YyUserAuthenticationConverter userTokenConverter = new YyUserAuthenticationConverter();
+        accessTokenConverter.setUserTokenConverter(userTokenConverter);
+        return accessTokenConverter;
+    }
+
     //定义了授权和令牌端点和令牌服务
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints){
         endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)
+                .accessTokenConverter(accessTokenConverter())
                 .tokenStore(tokenStore())//持久化方式
                 .tokenEnhancer(tokenEnhancer())//token中添加的额外信息
                 .userDetailsService(userDetailsService)//用户实现

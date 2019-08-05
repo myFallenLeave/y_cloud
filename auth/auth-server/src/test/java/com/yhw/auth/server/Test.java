@@ -39,7 +39,7 @@ public class Test {
 
 //        String result = HttpUtil.post(url); bearer  Basic
         String result = HttpRequest.get(url)
-                .header("Authorization","bearer 24d1b36d-78ef-4015-9e5a-edfd27420327")
+                .header("Authorization","bearer ca8218ac-f0d1-4f57-9f35-7047bfd4a3bd")
                 .execute()
                 .body();
         System.out.println(result);

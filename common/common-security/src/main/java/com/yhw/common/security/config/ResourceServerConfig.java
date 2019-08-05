@@ -30,10 +30,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new RemoteTokenProperties();
     }
 
-    /**
-     * 配置token 转换器
-     * @return
-     */
+
     @Bean
     public AccessTokenConverter accessTokenConverter() {
         DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();

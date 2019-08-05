@@ -1,6 +1,5 @@
 package com.yhw.common.security;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.yhw.common.model.AuthUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,9 +12,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * 自定义token 转换器
- */
 public class YyUserAuthenticationConverter implements UserAuthenticationConverter {
 
     private static final String USER_ID = "user_id";
@@ -31,6 +27,14 @@ public class YyUserAuthenticationConverter implements UserAuthenticationConverte
     public Map<String, ?> convertUserAuthentication(Authentication authentication) {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put(USERNAME, authentication.getName());
+
+        Object principal = authentication.getPrincipal();
+        AuthUser authUser = null;
+        if(principal instanceof  AuthUser){
+            authUser =   (AuthUser)principal;
+            response.put(USER_ID, authUser.getUserId());
+        }
+
         if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
             response.put(AUTHORITIES, AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
         }
