@@ -39,7 +39,37 @@ public class Test {
 
 //        String result = HttpUtil.post(url); bearer  Basic
         String result = HttpRequest.get(url)
-                .header("Authorization","bearer ca8218ac-f0d1-4f57-9f35-7047bfd4a3bd")
+                .header("Authorization","bearer 39ec14d7-12ba-4369-9a94-4a61bebb59f9")
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    //普通用户可访问
+    @org.junit.Test
+    public void bbb(){
+        url = url.concat("/bbbb");
+
+//        String result = HttpUtil.post(url); bearer  Basic
+        String result = HttpRequest.get(url)
+                .header("Authorization","bearer 03c119bc-0817-4b00-ae7b-8f9b8f43fe9e")
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    //管理员访问
+    @org.junit.Test
+    public void ccc(){
+        url = url.concat("/ccc");
+
+//        bf6b9dff-fca8-44c1-8f57-3e0a31af5c7a  admin
+//        46aa7b91-0dac-439a-ae6c-dd27667f0b4a  zhangsan
+
+
+//        String result = HttpUtil.post(url); bearer  Basic
+        String result = HttpRequest.get(url)
+                .header("Authorization","bearer bf6b9dff-fca8-44c1-8f57-3e0a31af5c7a")
                 .execute()
                 .body();
         System.out.println(result);
@@ -92,7 +122,7 @@ public class Test {
     public void checkToken(){
         url = url.concat("/oauth/check_token");
 
-        parameter.put("token","24d1b36d-78ef-4015-9e5a-edfd27420327");
+        parameter.put("token","dea71f38-206d-4bbd-9db0-ad92ba164160");
 
         String result = HttpRequest.post(url)
                 .form(parameter)

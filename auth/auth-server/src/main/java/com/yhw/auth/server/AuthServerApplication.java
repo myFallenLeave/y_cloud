@@ -4,7 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan("com.yhw")
 @EnableFeignClients(basePackages = {"com.yhw.service.api.user.feign"}) //服务提供方的接口路径
 @SpringBootApplication
