@@ -18,6 +18,7 @@ import java.util.List;
  * 自定义filter
  * 实现GatewayFilterFactory接口。
  * 类名一定要为filterName + GatewayFilterFactory，如这里定义为AuthCheckGatewayFilterFactory的话，它的filterName就是AuthCheck
+ * AbstractGatewayFilterFactory后面的config是自定义，配置文件的参数
  * 需要使用当前filter，加入路由即可
  * Created by YHW on 2019/6/2.
  */
