@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
         <spring-platform.version>Cairo-SR7</spring-platform.version>
@@ -33,8 +33,10 @@
         <lombok.version>1.18.6</lombok.version>
         <fastjson.version>1.2.55</fastjson.version>
         <project-sourceEncoding>UTF-8</project-sourceEncoding>
-        <!-- apache maven插件版本-->
-        <org.apache.maven.plugins.version>3.8.0</org.apache.maven.plugins.version>
+        <!-- 编译插件-->
+        <apache.maven.plugins.compiler.version>3.8.0</apache.maven.plugins.compiler.version>
+        <!-- 打包插件 -->
+        <apache.maven.plugins.source.version>3.0.1</apache.maven.plugins.source.version>
         <cloud.version>1.0.0</cloud.version>
     </properties>
 
@@ -55,6 +57,31 @@
         <!-- im -->
         <module>im-demo</module>
     </modules>
+
+    <dependencies>
+        <!-- jdk11 依赖  begin -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- jdk11 依赖  end -->
+    </dependencies>
 
 
     <dependencyManagement>
@@ -253,7 +280,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${org.apache.maven.plugins.version}</version>
+                    <version>${apache.maven.plugins.compiler.version}</version>
                     <configuration>
                         <source>${java.version}</source> <!--源代码 jdk版本-->
                         <target>${java.version}</target> <!--class文件编译版本-->
@@ -265,7 +292,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>${org.apache.maven.plugins.version}</version>
+                    <version>${apache.maven.plugins.source.version}</version>
                     <configuration>
                         <attach>true</attach>
                     </configuration>
@@ -280,5 +307,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 </project>

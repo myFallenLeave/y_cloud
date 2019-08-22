@@ -11,15 +11,6 @@
     <artifactId>service-api-user</artifactId>
     <version>1.0.0</version>
     <description>user service api </description>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <packaging>jar</packaging>
 
 </project>

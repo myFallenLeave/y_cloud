@@ -14,6 +14,14 @@
     <name>auth-example</name>
     <description>springboot oauth demo</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
+        <!-- 跳过打包测试 -->
+        <skipTests>true</skipTests>
+    </properties>
+
 
     <dependencies>
         <dependency>

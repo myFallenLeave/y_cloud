@@ -12,6 +12,13 @@
     <version>1.0.0</version>
     <description>oauth2 【认证服务器】</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
+        <skipTests>true</skipTests>
+    </properties>
+
 
     <dependencies>
         <!-- api 测试feign调用 -->
