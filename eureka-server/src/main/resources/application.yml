@@ -1,5 +1,5 @@
 server:
-  port: 8761
+  port: 8762
 spring:
   application:
       name: @artifactId@
@@ -7,8 +7,8 @@ spring:
   security:
     #如果不添加，将会产生随机值密码，用户名是user
     user:
-      password: sunday
-      name: sunday
+      password: yuyang
+      name: yuyang
 
 eureka:
   instance:

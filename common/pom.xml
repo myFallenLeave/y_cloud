@@ -20,6 +20,8 @@
         <module>common-security</module>
         <!-- 通用工具包 -->
         <module>common-util</module>
+        <module>common-swagger-bp</module>
+        <module>common-swagger-layui</module>
     </modules>
 
 
