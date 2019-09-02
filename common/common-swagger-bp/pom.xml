@@ -8,9 +8,8 @@
         <artifactId>common</artifactId>
         <version>1.0.0</version>
     </parent>
-    <groupId>com.yunyang</groupId>
+    <groupId>com.yhw</groupId>
     <artifactId>common-swagger-bp</artifactId>
-    <version>1.0.0</version>
     <description>为开源项目 swagger-bootstrap-ui json报错，所以进行代码拉到本地，对js进行更改</description>
 
     <properties>

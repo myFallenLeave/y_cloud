@@ -47,7 +47,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
 
-    //在令牌端点上定义了安全约束
+    /**
+     * 在令牌端点上定义了安全约束
+     * @param oauthServer
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer){
         //允许用户通过表单来验证
@@ -67,7 +70,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcClientDetailsService(dataSource);
     }
 
-    //定义了客户端细节服务
+    /**
+     * 定义了客户端细节服务
+     * @param clients
+     * @throws Exception
+     */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //持久化客户端信息
@@ -82,7 +89,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return accessTokenConverter;
     }
 
-    //定义了授权和令牌端点和令牌服务
+    /**
+     * 定义了授权和令牌端点和令牌服务
+     * @param endpoints
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints){
         endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)
@@ -110,7 +120,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenEnhancer tokenEnhancer(){
         return ((accessToken, authentication) -> {
             final Map<String, Object> additionalInfo = new HashMap<>(1);
-            additionalInfo.put("license", "made by yunyang");
+            additionalInfo.put("license", "made by yhw");
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         });

@@ -319,4 +319,33 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <!-- 快照仓库 SNAPSHOT -->
+        <snapshotRepository>
+            <id>test-snapshots</id>
+            <name>test-snapshots</name>
+            <url>http://192.168.224.129:9901/repository/TestMaven/</url>
+        </snapshotRepository>
+        <!-- 发布仓库 -->
+        <repository>
+            <id>test-releases</id>
+            <name>test-releases</name>
+            <url>http://192.168.224.129:9901/repository/TestMaven/</url>
+        </repository>
+
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>test-snapshots</id>
+            <name>test-snapshots</name>
+            <url>http://192.168.224.129:9901/repository/TestMaven/</url>
+        </repository>
+        <repository>
+            <id>test-releases</id>
+            <name>test-releases</name>
+            <url>http://192.168.224.129:9901/repository/TestMaven/</url>
+        </repository>
+    </repositories>
 </project>

@@ -9,9 +9,15 @@
     </parent>
     <groupId>com.yhw</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.0</version>
     <description>公共包</description>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
+        <filtering>true</filtering>
+    </properties>
 
     <modules>
         <!-- 服务通用配置 -->

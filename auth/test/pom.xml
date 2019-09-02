@@ -9,7 +9,6 @@
 	</parent>
 	<groupId>com.yhw</groupId>
 	<artifactId>test</artifactId>
-	<version>1.0.0</version>
 	<description>测试【认证】 + 【】 服务</description>
 
 	<properties>

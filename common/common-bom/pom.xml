@@ -9,11 +9,15 @@
     </parent>
     <groupId>com.yhw</groupId>
     <artifactId>common-bom</artifactId>
-    <version>1.0.0</version>
-    <name>common-bom</name>
     <description>服务通用</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
+        <filtering>true</filtering>
+    </properties>
 
     <dependencies>
         <!--eureka client-->

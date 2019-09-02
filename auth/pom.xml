@@ -9,8 +9,6 @@
     </parent>
     <groupId>com.yhw.cloud</groupId>
     <artifactId>auth</artifactId>
-    <version>1.0.0</version>
-    <name>auth</name>
     <description>spring security example</description>
     <packaging>pom</packaging>
 

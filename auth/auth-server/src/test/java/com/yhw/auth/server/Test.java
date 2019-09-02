@@ -122,9 +122,33 @@ public class Test {
     public void checkToken(){
         url = url.concat("/oauth/check_token");
 
-        parameter.put("token","dea71f38-206d-4bbd-9db0-ad92ba164160");
+        parameter.put("token","cad0d1a9-b3b7-4464-bbef-94bc4a6a51b6");
 
         String result = HttpRequest.post(url)
+                .form(parameter)
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    @org.junit.Test
+    public void mobile(){
+        url = url.concat("/oauth/mobile");
+
+        parameter.put("mobile","15265875263");
+
+        String result = HttpRequest.post(url)
+                .form(parameter)
+                .execute()
+                .body();
+        System.out.println(result);
+    }
+
+    @org.junit.Test
+    public void mobile1(){
+        url = url.concat("/oauth/mobile/15265875263");
+
+        String result = HttpRequest.get(url)
                 .form(parameter)
                 .execute()
                 .body();

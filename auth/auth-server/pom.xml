@@ -9,7 +9,6 @@
     </parent>
     <groupId>com.yhw</groupId>
     <artifactId>auth-server</artifactId>
-    <version>1.0.0</version>
     <description>oauth2 【认证服务器】</description>
 
     <properties>
