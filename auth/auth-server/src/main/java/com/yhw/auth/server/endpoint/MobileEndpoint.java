@@ -54,7 +54,6 @@ public class MobileEndpoint{
     @Resource
     private ClientDetailsService clientDetailsService;
 
-
     @Value("${security.oauth2.resource.clientId}")
     private String clientId;
 

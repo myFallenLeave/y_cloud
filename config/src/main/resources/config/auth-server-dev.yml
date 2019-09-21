@@ -1,0 +1,24 @@
+security:
+  oauth2:
+    resource:
+      #客户端ID,用于手机登录获取token令牌
+      clientId: client
+spring:
+  #redis相关配置，可以采用默认配置
+  redis:
+    host: ${REDIS_HOST:localhost}
+    database: 1
+    port: ${REDIS_PORT:6379}
+  #json时区设置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  #数据库连接
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PWD:yhwei}
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/oauth?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+
+

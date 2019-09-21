@@ -1,22 +1,33 @@
+#注释留存
 server:
-  port: 8888
+  port: 9999
 spring:
   application:
     name: @artifactId@
   profiles:
     active: native
+  # 配置中心
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config/
-#        bootstrap: true
+        #开启复合配置，即开启git也使用本地
+        bootstrap: true
+#        git:
+#          uri: http://localhost:8811/y_cloud/cloud-config.git     # 配置git仓库的地址
+#          username: yhw                                   # git仓库的账号
+#          password: yhw
+#        native:
+#          search-locations: classpath:/config/
+# 注册中心配置
 eureka:
   instance:
     prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://sunday:sunday@${EUREKA_HOST:localhost}:8761/eureka/
+# 暴露监控端点
 management:
   endpoints:
     web:

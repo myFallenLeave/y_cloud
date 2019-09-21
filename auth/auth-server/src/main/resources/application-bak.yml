@@ -1,3 +1,4 @@
+#无配置中心版本留存
 server:
   port: 8888
 logging:

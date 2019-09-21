@@ -9,7 +9,6 @@ spring:
     user:
       password: sunday
       name: sunday
-
 eureka:
   instance:
     hostname: localhost

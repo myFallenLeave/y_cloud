@@ -1,0 +1,25 @@
+# redis 相关
+spring:
+  security:
+    oauth2:
+      client:
+        client_id: client
+        client_secret: secret
+        check_token_uri: http://localhost:8888/oauth/check_token
+        ignore_uri:
+          - /**
+  #热部署配置
+  devtools:
+    restart:
+      #热部署生效
+      enabled: true
+      #设置重启的目录
+      additional-paths: src/main/java
+      #不生效位置，使用默认
+      exclude: WEB-INF/**
+  #redis
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PWD:}
+
