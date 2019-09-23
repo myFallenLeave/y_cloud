@@ -3,8 +3,8 @@ server:
 spring:
   application:
     name: @artifactId@
-  profiles:
-    active: native
+#  profiles:
+#    active: native
   cloud:
     config:
       server:
