@@ -13,9 +13,12 @@ spring:
   cloud:
     config:
       name: ${spring.application.name}
+      username: sunday
+      password: sunday
       discovery:
         enabled: true
         serviceId: config
+
 
 
 
