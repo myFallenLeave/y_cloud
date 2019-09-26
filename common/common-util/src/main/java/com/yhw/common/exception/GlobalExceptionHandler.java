@@ -3,14 +3,18 @@ package com.yhw.common.exception;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 //如果返回的为json数据或其它对象，添加该注解
 @ControllerAdvice
@@ -47,6 +51,36 @@ public class GlobalExceptionHandler {
     public JSONObject httpMessageNotReadableExceptionHandler(){
 
         return null;
+    }
+
+    /**
+     * spring  RequestParameter 异常
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public JSONObject missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException exception){
+        /*
+        //HttpServletResponse response
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
+        //System.out.println(exception.getMessage());
+        JSONObject jsonObject = JSONUtil.parseObj(ApiResult.getBuilder()
+                .setMessage("必填参数：[".concat(exception.getParameterName()).concat("]为空"))
+                .setCode(400)
+                .setSuccess(false)
+                .builder());
+        try {
+            response.getWriter().write(jsonObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", "400");
+        jsonObject.put("success", false);
+        jsonObject.put("data", "");
+        jsonObject.put("message", "必填参数：[".concat(exception.getParameterName()).concat("]为空"));
+        return jsonObject;
     }
 
 
