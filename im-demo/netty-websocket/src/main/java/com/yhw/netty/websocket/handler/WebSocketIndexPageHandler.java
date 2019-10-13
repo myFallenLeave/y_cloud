@@ -63,11 +63,9 @@ public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullH
         // Send the index page
         if ("/".equals(req.uri()) || "/index.html".equals(req.uri())) {
             String webSocketLocation = getWebSocketLocation(ctx.pipeline(), req, websocketPath);
-            System.err.println("=================>>>>>>>>>>>>>>>>>>"+webSocketLocation);
 
-//            webSocketLocation = webSocketLocation.concat("?userName=zhangsan&passwod=123456");
-
-            System.err.println("=================>>>>>>>>>>>>>>>>>>"+webSocketLocation);
+            //拼接认证信息
+            webSocketLocation = webSocketLocation.concat("?userName=zhangsan&passwod=123456");
 
             ByteBuf content = WebSocketServerIndexPage.getContent(webSocketLocation);
             FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK, content);
@@ -76,9 +74,17 @@ public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullH
             HttpUtil.setContentLength(res, content.readableBytes());
 
             sendHttpResponse(ctx, req, res);
-        } else {
-            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND, Unpooled.EMPTY_BUFFER));
+        }else {
+            //sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND, Unpooled.EMPTY_BUFFER));
+            //提示登录
+            ByteBuf content = WebSocketServerIndexPage.getRedirect();
+            FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK, content);
+
+            res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
+            HttpUtil.setContentLength(res, content.readableBytes());
+            sendHttpResponse(ctx, req, res);
         }
+
     }
 
     @Override

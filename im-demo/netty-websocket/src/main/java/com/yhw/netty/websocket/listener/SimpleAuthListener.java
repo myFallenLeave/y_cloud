@@ -21,8 +21,8 @@ public class SimpleAuthListener extends AuthListener {
         List<String> groupIds = new ArrayList<>();
         groupIds.add("11111111");
         groupIds.add("22222222");
-        userRepository.put("张三",new ImUser("123456",groupIds));
-        userRepository.put("李四",new ImUser("654321",groupIds));
+        userRepository.put("zhangsan",new ImUser("123456",groupIds));
+        userRepository.put("lisi",new ImUser("654321",groupIds));
     }
 
     @Override
@@ -33,6 +33,6 @@ public class SimpleAuthListener extends AuthListener {
     @Override
     public void loginSuccess(ImChannelContext context) {
         String logintSuccessMsg = context.getUserId().concat("登录成功！");
-        context.getChannel().write(new TextWebSocketFrame(logintSuccessMsg));
+        context.getChannel().writeAndFlush(new TextWebSocketFrame(logintSuccessMsg));
     }
 }

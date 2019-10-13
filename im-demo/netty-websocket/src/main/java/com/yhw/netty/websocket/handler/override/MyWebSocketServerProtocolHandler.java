@@ -20,7 +20,8 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     private  boolean allowExtensions;
     private  int maxFramePayloadLength = 65536;
     private  boolean allowMaskMismatch;
-    private  boolean checkStartsWith;
+    //是否按照前缀检查 url请求(false 则需要和websocketPath完全匹配)
+    private  boolean checkStartsWith = true;
 
 
     public MyWebSocketServerProtocolHandler(String websocketPath) {
@@ -62,21 +63,42 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
+        System.err.println("============== webSocket 握手handler ,只需进行一次握手======================");
 //        super.handlerAdded(ctx);
         ChannelPipeline cp = ctx.pipeline();
-        System.err.println("============== 握手handler======================");
         if (cp.get(MyWebSocketServerProtocolHandshakeHandler.class) == null) {
             // Add the WebSocketHandshakeHandler before this one.
             ctx.pipeline().addBefore(ctx.name(), MyWebSocketServerProtocolHandshakeHandler.class.getName(),
                     new MyWebSocketServerProtocolHandshakeHandler(websocketPath, subprotocols,
                             allowExtensions, maxFramePayloadLength, allowMaskMismatch, checkStartsWith,new SimpleAuthListener()));
         }
-        System.err.println("====================================");
         if (cp.get(Utf8FrameValidator.class) == null) {
             // Add the UFT8 checking before this one.
             ctx.pipeline().addBefore(ctx.name(), Utf8FrameValidator.class.getName(),
                     new Utf8FrameValidator());
         }
+    }
+
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        //第一步 通道关闭触发(解绑操作)
+        System.err.println(this.getClass().getName() + " channel 被关闭：channelInactive()");
+        super.channelInactive(ctx);
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        //第二步
+        System.err.println(this.getClass().getName() +" channel 取消线程(NioEventLoop) 的绑定: channelUnregistered()");
+        super.channelUnregistered(ctx);
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        //第三步骤
+        System.err.println(this.getClass().getName() + " channel 逻辑处理器被移除：handlerRemoved()");
+        super.handlerRemoved(ctx);
     }
 
 

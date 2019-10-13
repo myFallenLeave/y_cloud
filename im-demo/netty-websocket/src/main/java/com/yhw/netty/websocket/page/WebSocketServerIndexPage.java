@@ -73,6 +73,10 @@ public final class WebSocketServerIndexPage {
                 "</html>" + NEWLINE, CharsetUtil.UTF_8);
     }
 
+    public static ByteBuf getRedirect() {
+        return Unpooled.copiedBuffer("请访问：localhost:8080/index.html", CharsetUtil.UTF_8);
+    }
+
     private WebSocketServerIndexPage() {
         // Unused
     }

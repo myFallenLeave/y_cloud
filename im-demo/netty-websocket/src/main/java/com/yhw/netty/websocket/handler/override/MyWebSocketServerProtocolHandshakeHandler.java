@@ -59,7 +59,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
         maxFramePayloadSize = maxFrameSize;
         this.allowMaskMismatch = allowMaskMismatch;
         this.checkStartsWith = checkStartsWith;
-        System.err.println("我被初始化了---------------------------------------");
+        System.err.println("MyWebSocketServerProtocolHandshakeHandler init");
         if(authListener == null){
             throw new IllegalStateException("authListener can not be empty ");
         }
@@ -69,7 +69,9 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     @Override
     public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
         final FullHttpRequest req = (FullHttpRequest) msg;
+        System.err.println("MyWebSocketServerProtocolHandshakeHandler read");
         if (isNotWebSocketPath(req)) {
+            System.err.println("不属于webSocket请求，向下一节点传递");
             ctx.fireChannelRead(msg);
             return;
         }
@@ -118,6 +120,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
 
 
     private boolean isNotWebSocketPath(FullHttpRequest req) {
+//        return false;
         return checkStartsWith ? !req.uri().startsWith(websocketPath) : !req.uri().equals(websocketPath);
     }
 
@@ -155,10 +158,11 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
         ImUser login = authListener.login(parmMap.get("userName"), parmMap.get("passwod"));
 
         if(login == null){
-            System.err.println("认证失败");
-//            channel.close();
+            System.err.println("认证失败，关闭连接");
+            channel.close();
         }
         //登录成功操作
         authListener.loginSuccess(new ImChannelContext(login.getUserId(),channel));
     }
+
 }
