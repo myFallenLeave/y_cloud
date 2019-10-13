@@ -1,19 +1,15 @@
 package com.yhw.netty.websocket.handler.override;
 
 import com.yhw.netty.websocket.context.ImChannelContext;
-import com.yhw.netty.websocket.listener.AuthListener;
+import com.yhw.netty.websocket.process.AuthProcess;
 import com.yhw.netty.websocket.model.ImUser;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.multipart.Attribute;
-import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.handler.ssl.SslHandler;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -34,7 +30,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     private final boolean allowMaskMismatch;
     private final boolean checkStartsWith;
 
-    private AuthListener authListener;
+    private AuthProcess authProcess;
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
                                             boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch) {
@@ -52,18 +48,14 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     }
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
-                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith,AuthListener authListener) {
+                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith, AuthProcess authProcess) {
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
         this.allowExtensions = allowExtensions;
         maxFramePayloadSize = maxFrameSize;
         this.allowMaskMismatch = allowMaskMismatch;
         this.checkStartsWith = checkStartsWith;
-        System.err.println("MyWebSocketServerProtocolHandshakeHandler init");
-        if(authListener == null){
-            throw new IllegalStateException("authListener can not be empty ");
-        }
-        this.authListener = authListener;
+        this.authProcess = authProcess;
     }
 
     @Override
@@ -155,14 +147,14 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
         }
 
 
-        ImUser login = authListener.login(parmMap.get("userName"), parmMap.get("passwod"));
+        ImUser login = authProcess.login(parmMap.get("userName"), parmMap.get("passwod"));
 
         if(login == null){
             System.err.println("认证失败，关闭连接");
             channel.close();
         }
         //登录成功操作
-        authListener.loginSuccess(new ImChannelContext(login.getUserId(),channel));
+        authProcess.loginSuccess(new ImChannelContext(login.getUserId(),channel));
     }
 
 }

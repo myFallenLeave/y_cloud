@@ -38,7 +38,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(new WebSocketServerCompressionHandler());
         //webSocket 协议处理
 //        pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true));
-        pipeline.addLast(new MyWebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true));
+        pipeline.addLast(new MyWebSocketServerProtocolHandler(WEBSOCKET_PATH));
         //http 首页处理器
         pipeline.addLast(new WebSocketIndexPageHandler(WEBSOCKET_PATH));
         //webSocket处理器

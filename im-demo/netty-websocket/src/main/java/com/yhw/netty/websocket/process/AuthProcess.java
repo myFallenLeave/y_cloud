@@ -1,9 +1,9 @@
-package com.yhw.netty.websocket.listener;
+package com.yhw.netty.websocket.process;
 
 import com.yhw.netty.websocket.context.ImChannelContext;
 import com.yhw.netty.websocket.model.ImUser;
 
-public abstract class AuthListener {
+public abstract class AuthProcess {
 
     /**
      * 登录

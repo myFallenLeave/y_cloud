@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.handler.override;
 
-import com.yhw.netty.websocket.listener.SimpleAuthListener;
+import com.yhw.netty.websocket.constants.NtConstant;
+import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.Utf8FrameValidator;
@@ -21,25 +22,27 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     private  int maxFramePayloadLength = 65536;
     private  boolean allowMaskMismatch;
     //是否按照前缀检查 url请求(false 则需要和websocketPath完全匹配)
-    private  boolean checkStartsWith = true;
+    private  boolean checkStartsWith;
+
+    private AuthProcess authProcess;
 
 
     public MyWebSocketServerProtocolHandler(String websocketPath) {
-        super(websocketPath);
-        this.websocketPath = websocketPath;
-        this.subprotocols = null;
-        this.allowExtensions = false;
+        this(websocketPath,null,false,true,null);
     }
 
-    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions) {
+    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions,boolean checkStartsWith,AuthProcess authProcess) {
         super(websocketPath,subprotocols,allowExtensions);
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
         this.allowExtensions = allowExtensions;
+        this.checkStartsWith = checkStartsWith;
+
+        this.authProcess = authProcess;
     }
 
     private static final AttributeKey<WebSocketServerHandshaker> MY_HANDSHAKER_ATTR_KEY =
-            AttributeKey.valueOf(WebSocketServerHandshaker.class, "HANDSHAKER");
+            AttributeKey.valueOf(WebSocketServerHandshaker.class, NtConstant.HANDSHAKER);
 
     static void setHandshaker(Channel channel, WebSocketServerHandshaker handshaker) {
         channel.attr(MY_HANDSHAKER_ATTR_KEY).set(handshaker);
@@ -64,13 +67,13 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         System.err.println("============== webSocket 握手handler ,只需进行一次握手======================");
-//        super.handlerAdded(ctx);
+        //super.handlerAdded(ctx);
         ChannelPipeline cp = ctx.pipeline();
         if (cp.get(MyWebSocketServerProtocolHandshakeHandler.class) == null) {
             // Add the WebSocketHandshakeHandler before this one.
             ctx.pipeline().addBefore(ctx.name(), MyWebSocketServerProtocolHandshakeHandler.class.getName(),
                     new MyWebSocketServerProtocolHandshakeHandler(websocketPath, subprotocols,
-                            allowExtensions, maxFramePayloadLength, allowMaskMismatch, checkStartsWith,new SimpleAuthListener()));
+                            allowExtensions, maxFramePayloadLength, allowMaskMismatch, checkStartsWith,authProcess));
         }
         if (cp.get(Utf8FrameValidator.class) == null) {
             // Add the UFT8 checking before this one.

@@ -1,4 +1,4 @@
-package com.yhw.netty.websocket.listener;
+package com.yhw.netty.websocket.process;
 
 import com.yhw.netty.websocket.context.ImChannelContext;
 import com.yhw.netty.websocket.model.ImUser;
@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author yhw
  */
-public class SimpleAuthListener extends AuthListener {
+public class TestAuthProcess extends AuthProcess {
 
     private static Map<String,ImUser> userRepository;
 
