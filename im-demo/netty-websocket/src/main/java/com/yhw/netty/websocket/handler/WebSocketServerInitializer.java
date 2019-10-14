@@ -1,12 +1,14 @@
 package com.yhw.netty.websocket.handler;
 
+import com.yhw.netty.websocket.context.ImContextRepository;
+import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.handler.override.MyWebSocketServerProtocolHandler;
+import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslContext;
 
@@ -16,12 +18,34 @@ import io.netty.handler.ssl.SslContext;
  */
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final String WEBSOCKET_PATH = "/websocket";
 
-    private final SslContext sslCtx;
+    private SslContext sslCtx;
+    String websocketPath;
+    String subprotocols;
+    boolean allowExtensions;
+    boolean checkStartsWith;
+    AuthProcess authProcess;
+    LifeCycleEvent lifeCycleEvent;
 
-    public WebSocketServerInitializer(SslContext sslCtx) {
+    private ImContextRepository contextRepository;
+
+    private WebSocketServerInitializer(){}
+
+    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath, AuthProcess authProcess, LifeCycleEvent lifeCycleEvent,ImContextRepository contextRepository){
+        this(sslCtx,websocketPath,null,true,true,authProcess,lifeCycleEvent,contextRepository);
+    }
+
+    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath, String subprotocols, boolean allowExtensions, boolean checkStartsWith, AuthProcess authProcess, LifeCycleEvent lifeCycleEvent,ImContextRepository contextRepository){
         this.sslCtx = sslCtx;
+        this.websocketPath = websocketPath;
+        this.subprotocols = subprotocols;
+        //需要 设置为true(运行拓展)
+        this.allowExtensions = true;
+        this.checkStartsWith = checkStartsWith;
+        this.authProcess = authProcess;
+        this.lifeCycleEvent = lifeCycleEvent;
+        this.contextRepository = contextRepository;
+
     }
 
     @Override
@@ -37,11 +61,12 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         //WebSocket数据压缩
         pipeline.addLast(new WebSocketServerCompressionHandler());
         //webSocket 协议处理
-//        pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true));
-        pipeline.addLast(new MyWebSocketServerProtocolHandler(WEBSOCKET_PATH));
+//        pipeline.addLast(new WebSocketServerProtocolHandler(websocketPath, null, true));
+        pipeline.addLast(new MyWebSocketServerProtocolHandler(websocketPath,subprotocols,allowExtensions,checkStartsWith,authProcess, lifeCycleEvent));
+//        pipeline.addLast(new MyWebSocketServerProtocolHandler(websocketPath,subprotocols,allowExtensions,checkStartsWith,authProcess, lifeCycleEvent));
         //http 首页处理器
-        pipeline.addLast(new WebSocketIndexPageHandler(WEBSOCKET_PATH));
+        pipeline.addLast(new WebSocketIndexPageHandler(websocketPath));
         //webSocket处理器
-        pipeline.addLast(new WebSocketFrameHandler());
+        pipeline.addLast(new WebSocketFrameHandler(contextRepository));
     }
 }

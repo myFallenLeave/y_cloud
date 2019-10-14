@@ -1,12 +1,14 @@
 package com.yhw.netty.websocket.handler.override;
 
 import com.yhw.netty.websocket.context.ImChannelContext;
-import com.yhw.netty.websocket.process.AuthProcess;
+import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.model.ImUser;
+import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.ssl.SslHandler;
 
 import java.util.HashMap;
@@ -31,6 +33,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     private final boolean checkStartsWith;
 
     private AuthProcess authProcess;
+    private LifeCycleEvent lifeCycleEvent;
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
                                             boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch) {
@@ -48,22 +51,25 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     }
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
-                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith, AuthProcess authProcess) {
+                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith, AuthProcess authProcess,LifeCycleEvent lifeCycleEvent) {
+        System.err.println("MyWebSocketServerProtocolHandshakeHandler init");
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
         this.allowExtensions = allowExtensions;
         maxFramePayloadSize = maxFrameSize;
         this.allowMaskMismatch = allowMaskMismatch;
         this.checkStartsWith = checkStartsWith;
+
         this.authProcess = authProcess;
+        this.lifeCycleEvent = lifeCycleEvent;
     }
 
     @Override
     public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
         final FullHttpRequest req = (FullHttpRequest) msg;
-        System.err.println("MyWebSocketServerProtocolHandshakeHandler read");
+
         if (isNotWebSocketPath(req)) {
-            System.err.println("不属于webSocket请求，向下一节点传递");
+//            System.err.println("不属于webSocket请求，向下一节点传递");
             ctx.fireChannelRead(msg);
             return;
         }
@@ -96,11 +102,12 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
                                             req.uri(), req.headers(), handshaker.selectedSubprotocol()));
 
                             //处理业务逻辑
-                            processHandshake(req,ctx.channel());
+                            processHandshake(req,ctx);
 
                         }
                     }
                 });
+
                 MyWebSocketServerProtocolHandler.setHandshaker(ctx.channel(), handshaker);
                 ctx.pipeline().replace(this, "WS403Responder",
                         MyWebSocketServerProtocolHandler.forbiddenHttpRequestResponder());
@@ -134,7 +141,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     }
 
 
-    private void processHandshake(HttpRequest req, Channel channel){
+    private void processHandshake(HttpRequest req, ChannelHandlerContext ctx){
         HttpMethod method = req.method();
         Map<String,String> parmMap = new HashMap<>();
         if (HttpMethod.GET == method) {
@@ -151,10 +158,21 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
 
         if(login == null){
             System.err.println("认证失败，关闭连接");
-            channel.close();
+            ctx.channel().close();
         }
         //登录成功操作
-        authProcess.loginSuccess(new ImChannelContext(login.getUserId(),channel));
+        Channel channel = ctx.channel();
+        ImChannelContext imChannelContext = new ImChannelContext(login.getUserId(), channel);
+        authProcess.loginSuccess(imChannelContext);
+        //认证成功，绑定上下文信息
+        lifeCycleEvent.bindContext(login,imChannelContext,channel);
+
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        //浏览器直接关闭，此处不会被触发
+        System.err.println(this.getClass().getName() + " channel 被关闭");
     }
 
 }

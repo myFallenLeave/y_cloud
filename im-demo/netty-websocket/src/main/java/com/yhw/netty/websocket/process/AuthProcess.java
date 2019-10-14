@@ -3,6 +3,10 @@ package com.yhw.netty.websocket.process;
 import com.yhw.netty.websocket.context.ImChannelContext;
 import com.yhw.netty.websocket.model.ImUser;
 
+/**
+ * web认证
+ * @author yhw
+ */
 public abstract class AuthProcess {
 
     /**
@@ -15,7 +19,7 @@ public abstract class AuthProcess {
 
     /**
      * 用户登录成功回调操作
-     *
+     * @param context 上下文
      */
     public abstract void loginSuccess(ImChannelContext context);
 

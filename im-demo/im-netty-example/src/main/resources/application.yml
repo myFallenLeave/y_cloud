@@ -1,0 +1,10 @@
+server:
+  port: 8076
+im:
+  ws:
+    ssl: false
+    port: 8077
+    websocketPath: /websocket
+    packetScan: com.yhw.im.netty.example.packet
+
+

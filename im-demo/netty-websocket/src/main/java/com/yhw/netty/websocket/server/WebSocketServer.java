@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.server;
 
-import com.yhw.netty.websocket.constants.NtConstant;
+import com.yhw.netty.websocket.context.ImContextRepository;
+import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.handler.WebSocketServerInitializer;
 import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.bootstrap.ServerBootstrap;
@@ -16,27 +17,27 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
  */
 public class WebSocketServer {
 
-    private int port;
-    private String websocketPath;
-    //是否启用ssl
+    /**
+     * 是否启用ssl
+     */
     private boolean ssl = false;
+    private int port;
 
-    AuthProcess authListener;
 
     private ServerBootstrap serverBootstrap;
     private NioEventLoopGroup boss;
     private NioEventLoopGroup work;
 
-    public WebSocketServer(){
-        websocketPath = NtConstant.DEFAULT_WEBSOCKET_PATH;
-        port = ssl ? 8843 : 8080;
+    private WebSocketServer(){
     }
 
-
-    public WebSocketServer(int port,String websocketPath,boolean ssl){
+    public WebSocketServer(int port,String websocketPath,boolean ssl,AuthProcess authProcess){
         this.ssl = ssl;
         this.port = port;
-        this.websocketPath = websocketPath;
+        //this.websocketPath = websocketPath;
+        //this.authProcess = authProcess;
+        ImContextRepository contextRepository = ImContextRepository.getInstance();
+        LifeCycleEvent lifeCycleEvent = new LifeCycleEvent(contextRepository);
 
         serverBootstrap = new ServerBootstrap();
         boss = new NioEventLoopGroup(1);
@@ -44,8 +45,7 @@ public class WebSocketServer {
 
         serverBootstrap.group(boss,work)
                 .channel(NioServerSocketChannel.class)
-                //.handler(new LoggingHandler(LogLevel.INFO))
-                .childHandler(new WebSocketServerInitializer(getSslContext()));
+                .childHandler(new WebSocketServerInitializer(getSslContext(),websocketPath,authProcess,lifeCycleEvent,contextRepository));
     }
 
     private SslContext getSslContext(){
@@ -76,43 +76,4 @@ public class WebSocketServer {
             work.shutdownGracefully();
         }
     }
-
-
-
-
-
-
-
-
-
-    /*public static void main(String[] args) throws Exception {
-        // Configure SSL.
-        final SslContext sslCtx;
-        if (SSL) {
-            SelfSignedCertificate ssc = new SelfSignedCertificate();
-            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
-        } else {
-            sslCtx = null;
-        }
-
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    // .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new WebSocketServerInitializer(sslCtx));
-
-            Channel ch = b.bind(PORT).sync().channel();
-
-            System.out.println("Open your web browser and navigate to " +
-                    (SSL? "https" : "http") + "://127.0.0.1:" + PORT + '/');
-
-            ch.closeFuture().sync();
-        } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
-        }
-    }*/
 }

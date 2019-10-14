@@ -4,18 +4,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 消息包基类
  * @author yhw
  */
 @NoArgsConstructor
 @Data
-public class Message {
+public abstract class Message {
     /**
      * 指令代码
      */
     private Integer cmd;
 
-    public Message(Integer cmd){
-        this.cmd = cmd;
-    }
+    public abstract Integer getCmd();
+
 
 }

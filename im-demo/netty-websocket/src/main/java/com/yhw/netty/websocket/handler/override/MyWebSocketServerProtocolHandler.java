@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.handler.override;
 
 import com.yhw.netty.websocket.constants.NtConstant;
+import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
@@ -20,18 +21,15 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     private  String subprotocols;
     private  boolean allowExtensions;
     private  int maxFramePayloadLength = 65536;
-    private  boolean allowMaskMismatch;
-    //是否按照前缀检查 url请求(false 则需要和websocketPath完全匹配)
+    /**
+     * 是否按照前缀检查 url请求(false 则需要和websocketPath完全匹配)
+     */
     private  boolean checkStartsWith;
 
     private AuthProcess authProcess;
+    private LifeCycleEvent lifeCycleEvent;
 
-
-    public MyWebSocketServerProtocolHandler(String websocketPath) {
-        this(websocketPath,null,false,true,null);
-    }
-
-    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions,boolean checkStartsWith,AuthProcess authProcess) {
+    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions,boolean checkStartsWith,AuthProcess authProcess,LifeCycleEvent lifeCycleEvent) {
         super(websocketPath,subprotocols,allowExtensions);
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
@@ -39,6 +37,7 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
         this.checkStartsWith = checkStartsWith;
 
         this.authProcess = authProcess;
+        this.lifeCycleEvent = lifeCycleEvent;
     }
 
     private static final AttributeKey<WebSocketServerHandshaker> MY_HANDSHAKER_ATTR_KEY =
@@ -73,7 +72,7 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
             // Add the WebSocketHandshakeHandler before this one.
             ctx.pipeline().addBefore(ctx.name(), MyWebSocketServerProtocolHandshakeHandler.class.getName(),
                     new MyWebSocketServerProtocolHandshakeHandler(websocketPath, subprotocols,
-                            allowExtensions, maxFramePayloadLength, allowMaskMismatch, checkStartsWith,authProcess));
+                            allowExtensions, maxFramePayloadLength, false, checkStartsWith,authProcess,lifeCycleEvent));
         }
         if (cp.get(Utf8FrameValidator.class) == null) {
             // Add the UFT8 checking before this one.
@@ -86,22 +85,23 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         //第一步 通道关闭触发(解绑操作)
-        System.err.println(this.getClass().getName() + " channel 被关闭：channelInactive()");
-        super.channelInactive(ctx);
+        System.err.println(this.getClass().getName() + " channel 被关闭：channelInactive() 进行解绑操作！");
+        lifeCycleEvent.cleanContext(ctx.channel());
+//        super.channelInactive(ctx);
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         //第二步
         System.err.println(this.getClass().getName() +" channel 取消线程(NioEventLoop) 的绑定: channelUnregistered()");
-        super.channelUnregistered(ctx);
+//        super.channelUnregistered(ctx);
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         //第三步骤
         System.err.println(this.getClass().getName() + " channel 逻辑处理器被移除：handlerRemoved()");
-        super.handlerRemoved(ctx);
+//        super.handlerRemoved(ctx);
     }
 
 
