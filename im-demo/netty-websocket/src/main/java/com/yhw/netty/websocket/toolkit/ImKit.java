@@ -23,7 +23,10 @@ public class ImKit {
      * @param message 消息体
      */
     public static void sendUser(String userId, Message message){
-        sendUsers(ImContextRepository.getInstance().getByUserId(userId),message);
+        List<ImChannelContext> byUserId = ImContextRepository.getInstance().getByUserId(userId);
+
+        //分布式环境下情况
+        sendUsers(byUserId,message);
     }
 
     /**
@@ -38,7 +41,7 @@ public class ImKit {
     }
 
     public static void sendGroup(String groupId){
-
+        //多节点情况下，直接推送到消息队列
     }
 
     private static void sendUsers(List<ImChannelContext> contexts, Message message){

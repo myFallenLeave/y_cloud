@@ -20,4 +20,10 @@ public interface NtConstant {
     String HANDSHAKER = "HANDSHAKER";
 
     AttributeKey<ImUser> SESSION = AttributeKey.newInstance("session");
+
+    Integer ERROR_CODE = 404;
+
+    Integer CHAT_CODE = 0;
+
+    Integer CHAT_GROUP_CODE = 1;
 }

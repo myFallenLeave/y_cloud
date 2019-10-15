@@ -79,6 +79,13 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
                 response = new ErrorMessage("请传递合法的消息体");
             }
             if(response != null){
+                //此处需要拓展（策略 strategy ）
+                //1.查询用户是否在线
+                //2 在线
+                //2.1 当前用户是否属于  当前节点的的channel，则直接进行推送
+                //2.2 如果是其他节点，则推送到消息队列MQ（广播传播方式） ，直接通过ImKit 进行推送
+                //3.离线
+                //3.1 对消息进行存储，用户上线进行消息推送(群组通过最后读取消息ID进行判断是否已读，避免用户存储多份同样的消息)
                 ctx.channel().writeAndFlush(ImKit.getMessage(response));
             }
 

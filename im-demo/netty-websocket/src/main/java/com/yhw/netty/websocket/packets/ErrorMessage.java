@@ -1,5 +1,6 @@
 package com.yhw.netty.websocket.packets;
 
+import com.yhw.netty.websocket.constants.NtConstant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,6 @@ public class ErrorMessage extends Message {
 
     @Override
     public Integer getCmd() {
-        return 404;
+        return NtConstant.ERROR_CODE;
     }
 }
