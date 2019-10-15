@@ -4,6 +4,7 @@ import com.yhw.netty.websocket.context.ImContextRepository;
 import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.handler.override.MyWebSocketServerProtocolHandler;
 import com.yhw.netty.websocket.process.AuthProcess;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -16,6 +17,7 @@ import io.netty.handler.ssl.SslContext;
  * 初始化
  * @author yhw
  */
+@ChannelHandler.Sharable
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
 

@@ -26,6 +26,7 @@ import com.yhw.netty.websocket.packets.ErrorMessage;
 import com.yhw.netty.websocket.packets.Message;
 import com.yhw.netty.websocket.process.CmdProcess;
 import com.yhw.netty.websocket.toolkit.ImKit;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -34,6 +35,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 /**
  * @author yhw
  */
+@ChannelHandler.Sharable
 public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     private ImContextRepository contextRepository;

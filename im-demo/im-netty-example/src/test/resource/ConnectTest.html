@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webSocket测试</title>
+</head>
+<body>
+    <div>
+        <div>
+            <label>ip地址：</label>
+            <input id="ipadd" type="text" />
+        </div>
+        <div>
+            <label>端口：</label>
+            <input id="port" type="text" />
+        </div>
+        <div>
+            <label>用户名：</label>
+            <input id="userName" type="text" />
+        </div>
+        <div>
+            <input type="button" value="登录" onclick="connect()" />
+        </div>
+        <form onsubmit="return false;">
+                <input type="text" name="message" value="Hello, World!"/>
+                <input type="button" value="发送webSocket数据" onclick="send(this.form.message.value)" />
+                <h3>响应数据</h3>
+                <textarea id="responseText" style="width:500px;height:300px;"></textarea>
+        </form>
+    </div>
+</body>
+<script type="application/javascript">
+    var webScoket;
+    var ip = "localhost";
+    var port = "8077";
+    // var userId = "";
+
+    function  connect() {
+        console.log("开始建立连接！");
+
+        var ip1 = document.getElementById("ipadd").value;
+        if(ip1 == undefined || ip1 == null || ip1 == ""){
+            ip1 = ip;
+        }
+        var port1 = document.getElementById("port").value;
+        if(port1 == undefined || port1== null || port1 == ""){
+            port1 = port;
+        }
+        var userName = document.getElementById("userName").value;
+
+        webScoket = new WebSocket("ws://"+ip+":"+port+"/websocket?userName="+userName);
+
+        //连接建立触发
+        webScoket.onopen = function(e){
+            console.log(ip+":"+port+"连接建立成功!");
+        };
+        //通信错误错发
+        webScoket.onerror = function(e){
+            console.log("连接异常");
+        };
+        //连接关闭触发
+        webScoket.onclose = function(e){
+            console.log("连接已关闭");
+        };
+        //收到服务器消息触发
+        webScoket.onmessage = function (e) {
+            var data = e.data;
+            //var dataObj = eval("("+data+")");//转换为json对象
+            // console.log("收到消息："+dataObj);
+            // console.log("收到消息命令代码："+dataObj.command);
+            console.log("-------------"+data+"----------------");
+            var ta = document.getElementById('responseText');
+            ta.value = ta.value + '\n' + data;
+ 
+        }
+    }
+
+    function send(message) {
+                  if (!window.WebSocket) { return; } 
+                  if (webScoket.readyState == WebSocket.OPEN) {
+                    webScoket.send(message);
+                  } else {
+                    alert("The socket is not open.");
+                  }
+    }
+
+    //获取表单属性
+    function getAttributes() {
+        
+    }
+</script>
+</html>

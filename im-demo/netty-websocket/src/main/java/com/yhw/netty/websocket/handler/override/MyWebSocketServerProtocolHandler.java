@@ -15,6 +15,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 /**
  * @author yhw
  */
+@ChannelHandler.Sharable
 public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHandler {
 
     private  String websocketPath;
