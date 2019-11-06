@@ -2,16 +2,17 @@ package com.yhw.netty.websocket;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ClassUtil;
+import com.yhw.netty.websocket.config.ImConfig;
 import com.yhw.netty.websocket.config.ImPropertiesConfig;
 import com.yhw.netty.websocket.constants.NtConstant;
 import com.yhw.netty.websocket.context.MessageManager;
 import com.yhw.netty.websocket.context.ProcessManager;
+import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.packets.Message;
 import com.yhw.netty.websocket.process.AuthProcess;
 import com.yhw.netty.websocket.process.CmdProcess;
 import com.yhw.netty.websocket.server.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -39,22 +40,30 @@ public class NettyWebSocketStarter {
 
     private WebSocketServer server;
 
-    @Autowired
+    //============================================
+
     private AuthProcess authProcess;
 
-    @Autowired
-    private ImPropertiesConfig propertiesConfig;
+    private LifeCycleEvent lifeCycleEvent;
 
+    private NettyWebSocketStarter(){}
 
-    @Autowired
-    private ApplicationContext applicationContext;
+    public NettyWebSocketStarter(AuthProcess authProcess){
+        this(authProcess,null);
+    }
+
+    public NettyWebSocketStarter(AuthProcess authProcess,LifeCycleEvent lifeCycleEvent){
+        this.authProcess = authProcess;
+        this.lifeCycleEvent = lifeCycleEvent;
+    }
+
 
 
     @PostConstruct
     public void init(){
-        setAttributes(propertiesConfig);
+        setAttributes(ImConfig.getImConfig().getPropertiesConfig());
         initCmdProcess();
-        server = new WebSocketServer(port,websocketPath,ssl,authProcess);
+        server = new WebSocketServer(port,websocketPath,ssl,authProcess,lifeCycleEvent);
         server.start();
     }
 
@@ -84,6 +93,7 @@ public class NettyWebSocketStarter {
 
     private void initCmdProcess(){
         try{
+            ApplicationContext applicationContext = ImConfig.getImConfig().getApplicationContext();
             List<CmdProcess> list = new ArrayList<>();
             String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 
@@ -106,7 +116,7 @@ public class NettyWebSocketStarter {
     private void initPacket(String packetScanPath){
         try{
             Set<Class<?>> set = ClassUtil.scanPackage(packetScanPath);
-            Object obj = null;
+            Object obj;
             List<Message> list = new ArrayList<>();
             if(CollectionUtil.isNotEmpty(set)){
                 for (Class clazz : set) {

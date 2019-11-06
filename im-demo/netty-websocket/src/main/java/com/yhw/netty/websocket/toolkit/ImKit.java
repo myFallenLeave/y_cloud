@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.toolkit;
 
 import cn.hutool.json.JSONUtil;
+import com.yhw.netty.websocket.config.ImConfig;
 import com.yhw.netty.websocket.context.ImChannelContext;
 import com.yhw.netty.websocket.context.ImContextRepository;
 import com.yhw.netty.websocket.packets.Message;
@@ -23,17 +24,32 @@ public class ImKit {
      * @param message 消息体
      */
     public static void sendUser(String userId, Message message){
-        List<ImChannelContext> byUserId = ImContextRepository.getInstance().getByUserId(userId);
-
-        //分布式环境下情况
-        sendUsers(byUserId,message);
+        List<ImChannelContext> contexts = ImContextRepository.getInstance().getByUserId(userId);
+        if(contexts == null || contexts.isEmpty()){
+            //分布式环境下情况
+        }else {
+            sendUsers(contexts,message);
+        }
     }
 
     /**
-     * 发送消息给所有用户
-     * @param message 消息体
+     * 发送消息
+     * @param message
      */
     public static void sendAll(Message message){
+        //如果是多节点部署，则发送消息到mq
+        if(ImConfig.getImConfig().getPropertiesConfig().isCluster()){
+            ImConfig.getImConfig().getImClusterTopic().publish(message);
+        }else {
+            sendNodeAll(message);
+        }
+    }
+
+    /**
+     * 发送消息 -> 当前节点所有用户
+     * @param message 消息体
+     */
+    public static void sendNodeAll(Message message){
         Map<String, List<ImChannelContext>> allChannel = ImContextRepository.getInstance().getAllChannel();
         for (String userId :allChannel.keySet()) {
             sendUsers(allChannel.get(userId),message);

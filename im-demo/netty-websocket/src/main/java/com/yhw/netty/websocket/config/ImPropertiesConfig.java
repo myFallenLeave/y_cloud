@@ -34,5 +34,10 @@ public class ImPropertiesConfig {
      */
     private boolean ssl;
 
+    /**
+     * 是否集群模式
+     */
+    private boolean cluster;
+
 
 }
