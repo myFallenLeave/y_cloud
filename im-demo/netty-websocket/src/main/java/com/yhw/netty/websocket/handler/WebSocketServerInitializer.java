@@ -27,17 +27,17 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     boolean allowExtensions;
     boolean checkStartsWith;
     AuthProcess authProcess;
-    LifeCycleEvent lifeCycleEvent;
 
     private ImContextRepository contextRepository;
 
     private WebSocketServerInitializer(){}
 
-    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath, AuthProcess authProcess, LifeCycleEvent lifeCycleEvent,ImContextRepository contextRepository){
-        this(sslCtx,websocketPath,null,true,true,authProcess,lifeCycleEvent,contextRepository);
+    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath,AuthProcess authProcess,ImContextRepository contextRepository){
+        this(sslCtx,websocketPath,null,true,true,authProcess,contextRepository);
     }
 
-    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath, String subprotocols, boolean allowExtensions, boolean checkStartsWith, AuthProcess authProcess, LifeCycleEvent lifeCycleEvent,ImContextRepository contextRepository){
+
+    public WebSocketServerInitializer(SslContext sslCtx,String websocketPath, String subprotocols, boolean allowExtensions, boolean checkStartsWith, AuthProcess authProcess,ImContextRepository contextRepository){
         this.sslCtx = sslCtx;
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
@@ -45,7 +45,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         this.allowExtensions = true;
         this.checkStartsWith = checkStartsWith;
         this.authProcess = authProcess;
-        this.lifeCycleEvent = lifeCycleEvent;
         this.contextRepository = contextRepository;
 
     }
@@ -64,7 +63,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(new WebSocketServerCompressionHandler());
         //webSocket 协议处理
 //        pipeline.addLast(new WebSocketServerProtocolHandler(websocketPath, null, true));
-        pipeline.addLast(new MyWebSocketServerProtocolHandler(websocketPath,subprotocols,allowExtensions,checkStartsWith,authProcess, lifeCycleEvent));
+        pipeline.addLast(new MyWebSocketServerProtocolHandler(websocketPath,subprotocols,allowExtensions,checkStartsWith,authProcess));
 //        pipeline.addLast(new MyWebSocketServerProtocolHandler(websocketPath,subprotocols,allowExtensions,checkStartsWith,authProcess, lifeCycleEvent));
         //http 首页处理器
         pipeline.addLast(new WebSocketIndexPageHandler(websocketPath));

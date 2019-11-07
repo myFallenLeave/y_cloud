@@ -23,6 +23,14 @@ public abstract class Message {
      */
     private Integer cmd;
 
+    /**
+     * 消息指令类型
+     * 一般正常会存在3种情况
+     * 无状态消息(即做 消息通知)
+     * 单聊消息
+     * 群聊消息
+     * @return
+     */
     public abstract Integer getCmd();
 
 

@@ -29,6 +29,11 @@ public interface NtConstant {
     Integer ERROR_CODE = 404;
 
     /**
+     * 消费发送成功响应包
+     */
+    Integer SUCCESS_CODE = 200;
+
+    /**
      * 单聊消息
      */
     Integer CHAT_CODE = 0;
@@ -37,6 +42,11 @@ public interface NtConstant {
      * 群聊消息
      */
     Integer CHAT_GROUP_CODE = 1;
+
+    /**
+     * 无状态消息,即后台服务推送给在线用户的消息
+     */
+    Integer NO_STATUE_CODE = 2;
 
 
     //缓存key前缀

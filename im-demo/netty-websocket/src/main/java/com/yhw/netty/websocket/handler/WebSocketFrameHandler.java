@@ -33,6 +33,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 /**
+ *
  * @author yhw
  */
 @ChannelHandler.Sharable
@@ -48,7 +49,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
         // ping and pong frames already handled
-        Message response = null;
+        Message response;
         if (frame instanceof TextWebSocketFrame) {
             // Send the uppercase string back.
             String request = ((TextWebSocketFrame) frame).text();
@@ -58,20 +59,21 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
             try {
                 requestObj = JSONUtil.parseObj(frame);
                 Integer code = requestObj.getInt("code");
-                if(code == null){
+                if(code != null){
+                    Message clazz = MessageManager.getInstance().getMessage(code);
 
-                }
-                Message clazz = MessageManager.getInstance().getMessage(code);
+                    ImUser imUser = ctx.channel().attr(NtConstant.SESSION).get();
+                    Message message = JSONUtil.toBean(requestObj, clazz.getClass());
 
-                ImUser imUser = ctx.channel().attr(NtConstant.SESSION).get();
-                Message message = JSONUtil.toBean(requestObj, clazz.getClass());
+                    CmdProcess process = ProcessManager.getInstance().getCmdProcess(code);
 
-                CmdProcess process = ProcessManager.getInstance().getCmdProcess(code);
-
-                if(process != null){
-                    response = process.handler(message, contextRepository.getByUserIdAndChannel(imUser.getUserId(), ctx.channel()));
+                    if(process != null){
+                        response = process.handler(message, contextRepository.getByUserIdAndChannel(imUser.getUserId(), ctx.channel()));
+                    }else {
+                        response = new ErrorMessage("消息编码不存在");
+                    }
                 }else {
-                    response = new ErrorMessage("消息编码不存在");
+                    response = new ErrorMessage("请传递合法的指令");
                 }
 
             } catch (Exception e) {
@@ -79,19 +81,20 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
                 response = new ErrorMessage("请传递合法的消息体");
             }
             if(response != null){
-                //此处需要拓展（策略 strategy ）
-                //1.查询用户是否在线
-                //2 在线
-                //2.1 当前用户是否属于  当前节点的的channel，则直接进行推送
-                //2.2 如果是其他节点，则推送到消息队列MQ（广播传播方式） ，直接通过ImKit 进行推送
-                //3.离线
-                //3.1 对消息进行存储，用户上线进行消息推送(群组通过最后读取消息ID进行判断是否已读，避免用户存储多份同样的消息)
                 ctx.channel().writeAndFlush(ImKit.getMessage(response));
             }
-
         } else {
             String message = "unsupported frame type: " + frame.getClass().getName();
             throw new UnsupportedOperationException(message);
         }
     }
+
+
+    //此处需要拓展（策略 strategy ）
+    //1.查询用户是否在线
+    //2 在线
+    //2.1 当前用户是否属于  当前节点的的channel，则直接进行推送
+    //2.2 如果是其他节点，则推送到消息队列MQ（广播传播方式） ，直接通过ImKit 进行推送
+    //3.离线
+    //3.1 对消息进行存储，用户上线进行消息推送(群组通过最后读取消息ID进行判断是否已读，避免用户存储多份同样的消息)
 }

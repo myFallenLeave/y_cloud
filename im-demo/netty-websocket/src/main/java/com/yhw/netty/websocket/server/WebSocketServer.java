@@ -27,17 +27,16 @@ public class WebSocketServer {
     private ServerBootstrap serverBootstrap;
     private NioEventLoopGroup boss;
     private NioEventLoopGroup work;
-    private LifeCycleEvent lifeCycleEvent;
+
 
     private WebSocketServer(){}
 
-    public WebSocketServer(int port,String websocketPath,boolean ssl,AuthProcess authProcess,LifeCycleEvent lifeCycleEvent){
+    public WebSocketServer(int port,String websocketPath,boolean ssl,AuthProcess authProcess){
         this.ssl = ssl;
         this.port = port;
         //this.websocketPath = websocketPath;
         //this.authProcess = authProcess;
         ImContextRepository contextRepository = ImContextRepository.getInstance();
-        initLifeCycleEvent(contextRepository);
 
         serverBootstrap = new ServerBootstrap();
         boss = new NioEventLoopGroup(1);
@@ -45,16 +44,9 @@ public class WebSocketServer {
 
         serverBootstrap.group(boss,work)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new WebSocketServerInitializer(getSslContext(),websocketPath,authProcess,lifeCycleEvent,contextRepository));
+                .childHandler(new WebSocketServerInitializer(getSslContext(),websocketPath,authProcess,contextRepository));
     }
 
-    private void initLifeCycleEvent(ImContextRepository contextRepository){
-        //lifeCycleEvent = new LifeCycleEvent(contextRepository);
-        if(lifeCycleEvent == null){
-            lifeCycleEvent = new LifeCycleEvent();
-        }
-        lifeCycleEvent.setContextRepository(contextRepository);
-    }
 
     private SslContext getSslContext(){
         SslContext sslCtx = null;

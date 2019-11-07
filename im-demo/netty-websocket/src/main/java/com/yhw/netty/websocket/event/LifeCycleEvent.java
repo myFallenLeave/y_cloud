@@ -2,7 +2,7 @@ package com.yhw.netty.websocket.event;
 
 import com.yhw.netty.websocket.config.ImConfig;
 import com.yhw.netty.websocket.constants.NtConstant;
-import com.yhw.netty.websocket.context.ImChannelContext;
+import com.yhw.netty.websocket.context.ImChannelContent;
 import com.yhw.netty.websocket.context.ImContextRepository;
 import com.yhw.netty.websocket.model.ImUser;
 import io.netty.channel.Channel;
@@ -29,7 +29,7 @@ public class LifeCycleEvent {
      * @param imChannelContext
      * @param channel
      */
-    public void bindContext(ImUser login,ImChannelContext imChannelContext,Channel channel){
+    public void bindContext(ImUser login, ImChannelContent imChannelContext, Channel channel){
         contextRepository.saveImChannelContext(imChannelContext);
         //通道绑定登录信息
         channel.attr(NtConstant.SESSION).set(login);
@@ -46,7 +46,7 @@ public class LifeCycleEvent {
      */
     public void cleanContext(Channel channel){
         ImUser imUser = channel.attr(NtConstant.SESSION).get();
-        contextRepository.removeImChannelContext(new ImChannelContext(imUser.getUserId(),channel));
+        contextRepository.removeImChannelContext(new ImChannelContent(imUser.getUserId(),channel));
         channel.attr(NtConstant.SESSION).set(null);
     }
 }

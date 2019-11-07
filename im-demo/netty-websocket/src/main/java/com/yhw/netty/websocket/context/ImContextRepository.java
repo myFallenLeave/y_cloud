@@ -20,23 +20,23 @@ public final class ImContextRepository {
         return Holder.SINGLE;
     }
 
-    private static Map<String, List<ImChannelContext>> repository = new ConcurrentHashMap<>();
+    private static Map<String, List<ImChannelContent>> repository = new ConcurrentHashMap<>();
 
-    public Map<String, List<ImChannelContext>> getAllChannel() {
+    public Map<String, List<ImChannelContent>> getAllChannel() {
         return repository;
     }
 
-    public List<ImChannelContext> getByUserId(String userId) {
-        List<ImChannelContext> contexts = repository.get(userId);
+    public List<ImChannelContent> getByUserId(String userId) {
+        List<ImChannelContent> contexts = repository.get(userId);
         if(contexts == null || contexts.isEmpty()){
             contexts = new ArrayList<>();
         }
         return contexts;
     }
 
-    public ImChannelContext getByUserIdAndChannel(String userId, Channel channel) {
-        List<ImChannelContext> contexts = getByUserId(userId);
-        for (ImChannelContext obj : contexts) {
+    public ImChannelContent getByUserIdAndChannel(String userId, Channel channel) {
+        List<ImChannelContent> contexts = getByUserId(userId);
+        for (ImChannelContent obj : contexts) {
             if(channel == obj.getChannel()){
                 return obj;
             }
@@ -44,8 +44,8 @@ public final class ImContextRepository {
         return null;
     }
 
-    public boolean saveImChannelContext(ImChannelContext context) {
-        List<ImChannelContext> contexts = getByUserId(context.getUserId());
+    public boolean saveImChannelContext(ImChannelContent context) {
+        List<ImChannelContent> contexts = getByUserId(context.getUserId());
 
         if(!contexts.isEmpty() && contexts.size() >= CONTEXT_MAX_SIZE){
             contexts.get(0).getChannel().close();
@@ -56,15 +56,15 @@ public final class ImContextRepository {
         return true;
     }
 
-    public boolean removeImChannelContext(ImChannelContext context) {
-        List<ImChannelContext> contexts =getByUserId(context.getUserId());
+    public boolean removeImChannelContext(ImChannelContent context) {
+        List<ImChannelContent> contexts =getByUserId(context.getUserId());
         if(contexts.contains(context)){
             contexts.remove(context);
             return true;
         }
-        ImChannelContext channelContext = null;
+        ImChannelContent channelContext = null;
         Channel channel = context.getChannel();
-        for (ImChannelContext obj : contexts) {
+        for (ImChannelContent obj : contexts) {
             if(channel == obj.getChannel()){
                 channelContext =  obj;
                 break;

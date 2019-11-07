@@ -1,6 +1,6 @@
 package com.yhw.netty.websocket.process;
 
-import com.yhw.netty.websocket.context.ImChannelContext;
+import com.yhw.netty.websocket.context.ImChannelContent;
 import com.yhw.netty.websocket.packets.Message;
 
 /**
@@ -14,10 +14,10 @@ public interface CmdProcess {
      * @param channelContext 上下文
      * @return 响应消息体(无响应,则返回null)
      */
-    Message  handler(Message message, ImChannelContext channelContext);
+    Message  handler(Message message, ImChannelContent channelContext);
 
     /**
-     * 设置命令码
+     * 设置命令码（此处的命令码，需要和消息包对应上）
      * @return 命令码
      */
     Integer getCmdCode();

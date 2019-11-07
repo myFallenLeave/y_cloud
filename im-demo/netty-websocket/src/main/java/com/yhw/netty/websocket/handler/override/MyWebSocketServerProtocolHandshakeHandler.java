@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.handler.override;
 
-import com.yhw.netty.websocket.context.ImChannelContext;
+import com.yhw.netty.websocket.context.GlobalContent;
+import com.yhw.netty.websocket.context.ImChannelContent;
 import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.model.ImUser;
 import com.yhw.netty.websocket.process.AuthProcess;
@@ -8,7 +9,6 @@ import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.ssl.SslHandler;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     private final boolean checkStartsWith;
 
     private AuthProcess authProcess;
-    private LifeCycleEvent lifeCycleEvent;
+
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
                                             boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch) {
@@ -51,7 +51,7 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
     }
 
     MyWebSocketServerProtocolHandshakeHandler(String websocketPath, String subprotocols,
-                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith, AuthProcess authProcess,LifeCycleEvent lifeCycleEvent) {
+                                              boolean allowExtensions, int maxFrameSize, boolean allowMaskMismatch, boolean checkStartsWith, AuthProcess authProcess) {
         System.err.println("MyWebSocketServerProtocolHandshakeHandler init");
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
@@ -61,7 +61,6 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
         this.checkStartsWith = checkStartsWith;
 
         this.authProcess = authProcess;
-        this.lifeCycleEvent = lifeCycleEvent;
     }
 
     @Override
@@ -162,10 +161,10 @@ public class MyWebSocketServerProtocolHandshakeHandler extends ChannelInboundHan
         }
         //登录成功操作
         Channel channel = ctx.channel();
-        ImChannelContext imChannelContext = new ImChannelContext(login.getUserId(), channel);
+        ImChannelContent imChannelContext = new ImChannelContent(login.getUserId(), channel);
         authProcess.loginSuccess(imChannelContext);
         //认证成功，绑定上下文信息
-        lifeCycleEvent.bindContext(login,imChannelContext,channel);
+        GlobalContent.getInstance().getLifeCycleEvent().bindContext(login,imChannelContext,channel);
 
     }
 

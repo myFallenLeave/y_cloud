@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class ImChannelContext {
+public class ImChannelContent {
 
     private String userId;
 
     private Channel channel;
 
-    public ImChannelContext(String userId,Channel channel) {
+    public ImChannelContent(String userId, Channel channel) {
         this.userId = userId;
         this.channel = channel;
     }

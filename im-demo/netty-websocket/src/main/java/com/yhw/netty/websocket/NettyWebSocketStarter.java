@@ -40,21 +40,19 @@ public class NettyWebSocketStarter {
 
     private WebSocketServer server;
 
-    //============================================
 
+    /**
+     * 认证处理器
+     */
     private AuthProcess authProcess;
 
-    private LifeCycleEvent lifeCycleEvent;
+
 
     private NettyWebSocketStarter(){}
 
-    public NettyWebSocketStarter(AuthProcess authProcess){
-        this(authProcess,null);
-    }
 
-    public NettyWebSocketStarter(AuthProcess authProcess,LifeCycleEvent lifeCycleEvent){
+    public NettyWebSocketStarter(AuthProcess authProcess){
         this.authProcess = authProcess;
-        this.lifeCycleEvent = lifeCycleEvent;
     }
 
 
@@ -63,7 +61,7 @@ public class NettyWebSocketStarter {
     public void init(){
         setAttributes(ImConfig.getImConfig().getPropertiesConfig());
         initCmdProcess();
-        server = new WebSocketServer(port,websocketPath,ssl,authProcess,lifeCycleEvent);
+        server = new WebSocketServer(port,websocketPath,ssl,authProcess);
         server.start();
     }
 

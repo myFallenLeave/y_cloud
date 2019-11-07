@@ -8,7 +8,7 @@ import lombok.Data;
  * @author yhw
  */
 @Data
-public class ChatGroupMessage extends Message {
+public class ChatGroupMessage<T> extends Message {
 
     /**
      * 消息发送者
@@ -19,6 +19,11 @@ public class ChatGroupMessage extends Message {
      * 消息接收群组
      */
     private String toGroupId;
+
+    /**
+     * 消息实体
+     */
+    private T data;
 
 
     @Override

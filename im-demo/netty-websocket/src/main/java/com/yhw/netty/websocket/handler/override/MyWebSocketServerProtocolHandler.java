@@ -1,6 +1,7 @@
 package com.yhw.netty.websocket.handler.override;
 
 import com.yhw.netty.websocket.constants.NtConstant;
+import com.yhw.netty.websocket.context.GlobalContent;
 import com.yhw.netty.websocket.event.LifeCycleEvent;
 import com.yhw.netty.websocket.process.AuthProcess;
 import io.netty.channel.*;
@@ -28,9 +29,9 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     private  boolean checkStartsWith;
 
     private AuthProcess authProcess;
-    private LifeCycleEvent lifeCycleEvent;
 
-    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions,boolean checkStartsWith,AuthProcess authProcess,LifeCycleEvent lifeCycleEvent) {
+
+    public MyWebSocketServerProtocolHandler(String websocketPath, String subprotocols, boolean allowExtensions,boolean checkStartsWith,AuthProcess authProcess) {
         super(websocketPath,subprotocols,allowExtensions);
         this.websocketPath = websocketPath;
         this.subprotocols = subprotocols;
@@ -38,7 +39,6 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
         this.checkStartsWith = checkStartsWith;
 
         this.authProcess = authProcess;
-        this.lifeCycleEvent = lifeCycleEvent;
     }
 
     private static final AttributeKey<WebSocketServerHandshaker> MY_HANDSHAKER_ATTR_KEY =
@@ -73,7 +73,7 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
             // Add the WebSocketHandshakeHandler before this one.
             ctx.pipeline().addBefore(ctx.name(), MyWebSocketServerProtocolHandshakeHandler.class.getName(),
                     new MyWebSocketServerProtocolHandshakeHandler(websocketPath, subprotocols,
-                            allowExtensions, maxFramePayloadLength, false, checkStartsWith,authProcess,lifeCycleEvent));
+                            allowExtensions, maxFramePayloadLength, false, checkStartsWith,authProcess));
         }
         if (cp.get(Utf8FrameValidator.class) == null) {
             // Add the UFT8 checking before this one.
@@ -87,7 +87,7 @@ public class MyWebSocketServerProtocolHandler extends WebSocketServerProtocolHan
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         //第一步 通道关闭触发(解绑操作)
         System.err.println(this.getClass().getName() + " channel 被关闭：channelInactive() 进行解绑操作！");
-        lifeCycleEvent.cleanContext(ctx.channel());
+        GlobalContent.getInstance().getLifeCycleEvent().cleanContext(ctx.channel());
 //        super.channelInactive(ctx);
     }
 
